@@ -13,9 +13,10 @@ using MTL.DataAccess.RepositoryManager;
 using MTL.Library.Common;
 using MTL.Library.Helpers;
 using MTL.Library.Models.Entities;
-//using QREntry.WebAPI.Extensions;
+using MTL.Library.Models.Authentication;
+using MTL.WebAPI.Extensions;
 using Microsoft.Extensions.Options;
-//using QREntry.WebAPI.Authentication;
+using MTL.WebAPI.Authentication;
 using System.Net;
 using System;
 using AutoMapper;
@@ -83,10 +84,10 @@ namespace MTL.WebAPI
 
             //Authtntication
             // Register the ConfigurationBuilder instance of FacebookAuthSettings
-            //services.Configure<FacebookAuthSettings>(Configuration.GetSection(nameof(FacebookAuthSettings)));
+            services.Configure<FacebookAuthSettings>(Configuration.GetSection(nameof(FacebookAuthSettings)));
 
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddSingleton<IJwtFactory, JwtFactory>();
+            services.AddSingleton<IJwtFactory, JwtFactory>();
 
             //add identity
             var builder = services.AddIdentityCore<AppUser>(o =>
@@ -106,48 +107,48 @@ namespace MTL.WebAPI
             services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             // Get options from app settings
-            //var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
 
             // Configure JwtIssuerOptions
-            //services.Configure<JwtIssuerOptions>(options =>
-            //{
-            //    options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-            //    options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
-            //    options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
-            //});
+            services.Configure<JwtIssuerOptions>(options =>
+            {
+                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
+                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+            });
 
-            //var tokenValidationParameters = new TokenValidationParameters
-            //{
-            //    ValidateIssuer = false,
-            //    ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
 
-            //    ValidateAudience = false,
-            //    ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
+                ValidateAudience = false,
+                ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
 
-            //    ValidateIssuerSigningKey = false,
-            //    IssuerSigningKey = _signingKey,
+                ValidateIssuerSigningKey = false,
+                IssuerSigningKey = _signingKey,
 
-            //    RequireExpirationTime = false,
-            //    ValidateLifetime = false,
-            //    ClockSkew = TimeSpan.Zero
-            //};
+                RequireExpirationTime = false,
+                ValidateLifetime = false,
+                ClockSkew = TimeSpan.Zero
+            };
 
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //}).AddJwtBearer(configureOptions =>
-            //{
-            //    configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-            //    configureOptions.TokenValidationParameters = tokenValidationParameters;
-            //    configureOptions.SaveToken = true;
-            //});
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(configureOptions =>
+            {
+                configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                configureOptions.TokenValidationParameters = tokenValidationParameters;
+                configureOptions.SaveToken = true;
+            });
 
             //// api user claim policy
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.ApiAccess));
-            //});
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.ApiAccess));
+            });
 
             //EF DB
             //services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
@@ -199,21 +200,22 @@ namespace MTL.WebAPI
             env.ConfigureNLog("nlog.config");
 
             //Authentication
-            //app.UseExceptionHandler(builder => {
-            //    builder.Run(
-            //        async context =>
-            //        {
-            //            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            //            context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            app.UseExceptionHandler(builder =>
+            {
+                builder.Run(
+                    async context =>
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
-            //            var error = context.Features.Get<IExceptionHandlerFeature>();
-            //            if (error != null)
-            //            {
-            //                context.Response.AddApplicationError(error.Error.Message);
-            //                await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
-            //            }
-            //        });
-            //});
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
+                        if (error != null)
+                        {
+                            context.Response.AddApplicationError(error.Error.Message);
+                            await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
+                        }
+                    });
+            });
 
 
             app.UseHttpsRedirection();

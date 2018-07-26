@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 
-namespace QREntry.WebAPI.Extensions
+namespace MTL.WebAPI.Extensions
 {
     public static class ResponseExtensions
     {
