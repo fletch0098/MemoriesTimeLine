@@ -1,0 +1,13 @@
+{
+  "AppSettings": {
+    "AppTitle": "Memories Time Line",
+    "Version": "1.0 DEV",
+    "apiURL": "https://localhost:44385/"
+  },
+  "FacebookAuthSettings": {
+    "AppId": "400595757012030",
+    "AppSecret": "a43ec16e6fc5eaa2756c94b5e5fea032"
+  },
+  "Constants": {
+  }
+}  
