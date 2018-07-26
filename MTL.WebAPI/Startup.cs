@@ -151,11 +151,11 @@ namespace MTL.WebAPI
             });
 
             //EF DB
-            //services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-            //b => b.MigrationsAssembly("QREntry.DataAccess")));
+            services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            b => b.MigrationsAssembly("MTL.WebAPI")));
 
             //EF In-Memory
-            services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("DataBase"));
+            //services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("MTLDataBase"));
 
             //DI
             services.AddSingleton(typeof(IDataRepository<Memory, int>), typeof(MemoryManager));
