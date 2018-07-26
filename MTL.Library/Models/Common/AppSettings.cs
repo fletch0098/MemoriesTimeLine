@@ -8,5 +8,6 @@ namespace MTL.Library.Models.Common
     {
         public string AppTitle { get; set; }
         public string Version { get; set; }
+        public string ApiURL { get; set; }
     }
 }

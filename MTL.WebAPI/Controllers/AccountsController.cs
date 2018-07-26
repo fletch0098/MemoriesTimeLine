@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using MTL.DataAccess;
 using MTL.Library.Models.Entities;
 using MTL.Library.Helpers;
-using QREntry.WebAPI.ViewModels;
+using MTL.WebAPI.ViewModels;
 
 
 namespace MTL.WebAPI.Controllers

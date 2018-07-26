@@ -1,6 +1,6 @@
 
 
-namespace QREntry.WebAPI.ViewModels
+namespace MTL.WebAPI.ViewModels
 {
    
   public class FacebookAuthViewModel

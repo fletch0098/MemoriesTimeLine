@@ -1,7 +1,7 @@
-﻿using QREntry.WebAPI.ViewModels.Validations;
+﻿using MTL.WebAPI.ViewModels.Validations;
 using FluentValidation.Attributes;
 
-namespace QREntry.WebAPI.ViewModels
+namespace MTL.WebAPI.ViewModels
 {
     [Validator(typeof(CredentialsViewModelValidator))]
     public class CredentialsViewModel

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QREntry.WebAPI.ViewModels
+namespace MTL.WebAPI.ViewModels
 {
     public class RegistrationViewModel
     {

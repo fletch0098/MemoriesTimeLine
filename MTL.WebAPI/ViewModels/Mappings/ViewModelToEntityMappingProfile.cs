@@ -2,7 +2,7 @@
 using AutoMapper;
 
 
-namespace QREntry.WebAPI.ViewModels.Mappings
+namespace MTL.WebAPI.ViewModels.Mappings
 {
     public class ViewModelToEntityMappingProfile : Profile
     {

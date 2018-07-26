@@ -4,7 +4,7 @@ using MTL.WebAPI.Authentication;
 using MTL.Library.Helpers;
 using MTL.Library.Models.Entities;
 using MTL.Library.Models.Authentication;
-using QREntry.WebAPI.ViewModels;
+using MTL.WebAPI.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

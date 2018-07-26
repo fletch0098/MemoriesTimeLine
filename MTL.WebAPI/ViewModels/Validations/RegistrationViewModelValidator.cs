@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 
 
-namespace QREntry.WebAPI.ViewModels.Validations
+namespace MTL.WebAPI.ViewModels.Validations
 {
     public class RegistrationViewModelValidator : AbstractValidator<RegistrationViewModel>
     {
