@@ -1,0 +1,40 @@
+<h1>App Settings</h1>
+
+<p>All app settings.</p>
+
+<p *ngIf="!appSettings"><em>Loading...</em></p>
+
+<table class='table' *ngIf="appSettings">
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enviromentName</td>
+      <td>{{ appSettings.enviromentName }}</td>
+    </tr>
+    <tr>
+      <td>appName</td>
+      <td>{{ appSettings.appName }}</td>
+    </tr>
+    <tr>
+      <td>appURL</td>
+      <td>{{ appSettings.appURL }}</td>
+    </tr>
+    <tr>
+      <td>apiURL</td>
+      <td>{{ appSettings.apiURL }}</td>
+    </tr>
+    <tr>
+      <td>appTitle</td>
+      <td>{{ appSettings.appTitle }}</td>
+    </tr>
+    <tr>
+      <td>version</td>
+      <td>{{ appSettings.version }}</td>
+    </tr>
+  </tbody>
+</table>
