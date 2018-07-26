@@ -10,7 +10,7 @@ import { ConfigurationService } from '../shared/services/configuration.service';
 })
 export class AppSettingsComponent implements OnInit {
 
-  private appSettings: appSetting;
+  appSettings: appSetting;
 
   constructor(private configurationService: ConfigurationService) {
     this.appSettings = this.configurationService.getAppSettings();

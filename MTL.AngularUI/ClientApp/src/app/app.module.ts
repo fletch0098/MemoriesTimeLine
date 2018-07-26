@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ConfigurationService } from './shared/services/configuration.service';
 import { AppSettingsComponent } from './app-settings/app-settings.component';
@@ -23,7 +22,6 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
     FetchDataComponent,
     AppSettingsComponent
   ],
@@ -33,7 +31,6 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'app-settings', component: AppSettingsComponent },
     ])
