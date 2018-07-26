@@ -14,6 +14,7 @@ import { ConfigurationService } from './shared/services/configuration.service';
 import { AppSettingsComponent } from './app-settings/app-settings.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { BaseService } from './shared/services/base.service';
 
 const appInitializerFn = (appConfig: ConfigurationService) => {
   return () => {
@@ -43,7 +44,7 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFn,
       multi: true,
-      deps: [ConfigurationService]
+      deps: [ConfigurationService],
     }],
   bootstrap: [AppComponent]
 })
