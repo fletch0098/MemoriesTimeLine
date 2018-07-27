@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule, XHRBackend } from '@angular/http';
+import { AuthenticateXHRBackend } from './authenticate-xhr.backend';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -20,6 +21,10 @@ import { SharedModule } from './shared/modules/shared.module';
 
 /* Account Imports */
 import { AccountModule } from './account/account.module';
+/* Dashboard Imports */
+import { DashboardModule } from './dashboard/dashboard.module';
+/* TimeLine Imports */
+import { TimelineModule } from './timeline/timeline.module';
 
 const appInitializerFn = (appConfig: ConfigurationService) => {
   return () => {
@@ -45,7 +50,8 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
     BrowserAnimationsModule,
     CommonModule,
     SharedModule,
-    AccountModule
+    AccountModule,
+    DashboardModule,
   ],
   providers: [ConfigurationService,
     {
@@ -53,7 +59,12 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
       useFactory: appInitializerFn,
       multi: true,
       deps: [ConfigurationService],
+    },
+    {
+      provide: XHRBackend,
+      useClass: AuthenticateXHRBackend
     }],
+
   bootstrap: [AppComponent]
 })
 

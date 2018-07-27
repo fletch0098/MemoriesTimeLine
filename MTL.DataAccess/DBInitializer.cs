@@ -5,30 +5,62 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using MTL.Library.Models.Entities;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace MTL.DataAccess
 {
     public class DbInitializer
     {
         private readonly ILogger<DbInitializer> _logger;
+        private readonly UserManager<AppUser> _userManager;
 
-        public DbInitializer(ILogger<DbInitializer> logger)
+        public DbInitializer(ILogger<DbInitializer> logger, UserManager<AppUser> userManager)
         {
             _logger = logger;
+            _userManager = userManager;
         }
 
-        public void Initialize(MyAppContext context)
+        public async void Initialize(MyAppContext context)
         {
             context.Database.EnsureCreated();
 
             // Check for Data
-            if (context.Memories.Any())
+            if (context.Users.Any())
             {
                 _logger.LogWarning(string.Format("{0} : DataBase already seeded", System.Reflection.MethodBase.GetCurrentMethod()));
                 return;   // DB has been seeded
             }
 
             _logger.LogInformation(string.Format("{0} : Preparing to seed database", System.Reflection.MethodBase.GetCurrentMethod()));
+
+            //USers
+            var AppUsers = new AppUser[]
+            {
+            new AppUser{ UserName = "Admin@mtl.com", FirstName = "Admin", LastName= "Bob", Email="Admin@mtl.com" },
+            new AppUser{ UserName = "User@mtl.com", FirstName = "User", LastName= "Bob", Email="User@mtl.com" }
+            };
+
+            foreach (AppUser seed in AppUsers)
+            {
+                var result = await _userManager.CreateAsync(seed, "mtlmtl");
+                await context.UserProfile.AddAsync(new UserProfile { IdentityId = seed.Id, Location = "MTL" });
+            }
+            ///User END
+
+
+            var TimeLines = new TimeLine[]
+            {
+            new TimeLine{  name = "TimeLine1", description = "A time line about ...", lastModified=DateTime.Now},
+            new TimeLine{  name = "TimeLine2", description = "When I lived in ....", lastModified=DateTime.Now},
+            new TimeLine{  name = "TimeLine3", description = "My time in Arkano....", lastModified=DateTime.Now},
+            new TimeLine{  name = "TimeLine4", description = "WTF??", lastModified=DateTime.Now},
+            };
+
+            foreach (TimeLine seed in TimeLines)
+            {
+                context.TimeLines.Add(seed);
+            }
 
             var Memories = new Memory[]
             {
@@ -64,7 +96,10 @@ namespace MTL.DataAccess
                 _logger.LogError(string.Format("{0} : DataBase seeding error", System.Reflection.MethodBase.GetCurrentMethod()),ex);
             }
 
+            _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), AppUsers.Count(), "AppUsers"));
+            _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), AppUsers.Count(), "UserProfiles"));
             _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), Memories.Count(), "Memories"));
+            _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), TimeLines.Count(), "TimeLines"));
             _logger.LogInformation(string.Format("{0} : DataBase Initializing Complete", System.Reflection.MethodBase.GetCurrentMethod()));
         }
     }

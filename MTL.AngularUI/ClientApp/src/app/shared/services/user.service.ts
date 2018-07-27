@@ -39,7 +39,7 @@ export class UserService extends BaseService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post(this.baseUrl + "/accounts", body, options)
+    return this.http.post(this.baseUrl + "api/accounts", body, options)
       .map(res => true)
       .catch(this.handleError);
   }  
@@ -50,7 +50,7 @@ export class UserService extends BaseService {
 
     return this.http
       .post(
-      this.baseUrl + '/auth/login',
+      this.baseUrl + 'api/auth/login',
       JSON.stringify({ userName, password }),{ headers }
       )
       .map(res => res.json())
@@ -79,7 +79,7 @@ export class UserService extends BaseService {
     let body = JSON.stringify({ accessToken });  
     return this.http
       .post(
-      this.baseUrl + '/externalauth/facebook', body, { headers })
+      this.baseUrl + 'api/externalauth/', body, { headers })
       .map(res => res.json())
       .map(res => {
         localStorage.setItem('auth_token', res.auth_token);

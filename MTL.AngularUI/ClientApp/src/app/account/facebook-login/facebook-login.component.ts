@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 
 import { UserService } from '../../shared/services/user.service';
+import { ConfigurationService } from '../../shared/services/configuration.service';
+import { facebookSettings } from '../../shared/Models/facebookSettings';
+
 import { Router } from '@angular/router';
  
 
@@ -15,13 +18,35 @@ export class FacebookLoginComponent {
   failed: boolean;
   error: string;
   errorDescription: string;
-  isRequesting: boolean; 
+  isRequesting: boolean;
+  facebookSettings: facebookSettings;
+  url: string = null;
+
+  appURL: string;
 
   launchFbLogin() {
-    this.authWindow = window.open('https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=1528751870549294&display=popup&redirect_uri=http://localhost:5000/facebook-auth.html&scope=email',null,'width=600,height=400');    
+
+    console.log(this.facebookSettings);
+
+
+
+    this.authWindow = window.open(this.url,null,'width=600,height=400');    
   }
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, configService: ConfigurationService) {
+    this.isRequesting = true;
+    this.appURL = configService.getAppURL();
+
+   configService.getFacebookSettings()
+     .subscribe((facebookSettings: facebookSettings) => {
+       this.facebookSettings = facebookSettings;
+       this.url = `https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=${this.facebookSettings.appId}&display=popup&redirect_uri=${this.appURL}/facebook-auth.html&scope=email`;
+       this.isRequesting = false;
+     },
+        error => {
+          //this.notificationService.printErrorMessage(error);
+        });
+
     if (window.addEventListener) {
       window.addEventListener("message", this.handleMessage.bind(this), false);
     } else {
@@ -32,7 +57,7 @@ export class FacebookLoginComponent {
   handleMessage(event: Event) {
     const message = event as MessageEvent;
     // Only trust messages from the below origin.
-    if (message.origin !== "http://localhost:5000") return;
+    if (message.origin !== this.appURL) return;
 
     this.authWindow.close();
 

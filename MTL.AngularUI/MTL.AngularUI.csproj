@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\shared\Models\appSettings.ts" />
+    <None Remove="ClientApp\src\app\shared\Models\facebookSettings.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +33,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\Models\facebookSettings.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\Models\appSettings.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\account\models\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Credentials } from '../../shared/models/credentials';
 import { UserService } from '../../shared/services/user.service';
+import { FacebookLoginComponent } from '../facebook-login/facebook-login.component';
 
 @Component({
   selector: 'app-login-form',

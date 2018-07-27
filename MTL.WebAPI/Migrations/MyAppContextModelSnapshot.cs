@@ -205,6 +205,27 @@ namespace MTL.WebAPI.Migrations
                     b.ToTable("Memories");
                 });
 
+            modelBuilder.Entity("MTL.Library.Models.Entities.TimeLine", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("description");
+
+                    b.Property<DateTime>("lastModified");
+
+                    b.Property<string>("name");
+
+                    b.Property<string>("ownerId");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("ownerId");
+
+                    b.ToTable("TimeLines");
+                });
+
             modelBuilder.Entity("MTL.Library.Models.Entities.UserProfile", b =>
                 {
                     b.Property<int>("Id")
@@ -269,6 +290,13 @@ namespace MTL.WebAPI.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MTL.Library.Models.Entities.TimeLine", b =>
+                {
+                    b.HasOne("MTL.Library.Models.Entities.AppUser", "owner")
+                        .WithMany()
+                        .HasForeignKey("ownerId");
                 });
 
             modelBuilder.Entity("MTL.Library.Models.Entities.UserProfile", b =>
