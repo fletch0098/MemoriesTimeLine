@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -15,6 +16,10 @@ import { AppSettingsComponent } from './app-settings/app-settings.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { BaseService } from './shared/services/base.service';
+import { SharedModule } from './shared/modules/shared.module';
+
+/* Account Imports */
+import { AccountModule } from './account/account.module';
 
 const appInitializerFn = (appConfig: ConfigurationService) => {
   return () => {
@@ -37,7 +42,10 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CommonModule,
+    SharedModule,
+    AccountModule
   ],
   providers: [ConfigurationService,
     {
