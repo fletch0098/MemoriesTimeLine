@@ -24,7 +24,7 @@ import { AccountModule } from './account/account.module';
 /* Dashboard Imports */
 import { DashboardModule } from './dashboard/dashboard.module';
 /* TimeLine Imports */
-import { TimelineModule } from './timeline/timeline.module';
+import { TimeLineModule } from './time-line/timeline.module';
 
 const appInitializerFn = (appConfig: ConfigurationService) => {
   return () => {
@@ -52,6 +52,7 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
     SharedModule,
     AccountModule,
     DashboardModule,
+    TimeLineModule
   ],
   providers: [ConfigurationService,
     {

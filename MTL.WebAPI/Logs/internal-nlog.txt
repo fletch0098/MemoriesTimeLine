@@ -78,3 +78,105 @@
 2018-07-27 17:50:43.1757 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\nlog.config...
 2018-07-27 17:50:43.1757 Info Closing old configuration.
 2018-07-27 17:50:43.2106 Info Found 52 configuration items
+2018-07-30 16:18:02.3385 Info Message Template Auto Format enabled
+2018-07-30 16:18:02.3567 Info Loading assembly: NLog.Web.AspNetCore
+2018-07-30 16:18:02.3567 Info Loading assembly: NLog.Slack
+2018-07-30 16:18:02.6261 Info Adding target AsyncWrapper Target[allfile](File Target[allfile_wrapped])
+2018-07-30 16:18:02.6321 Info Adding target AsyncWrapper Target[ownFile-web](File Target[ownFile-web_wrapped])
+2018-07-30 16:18:02.6760 Info Adding target AsyncWrapper Target[slackTarget](Slack Target[slackTarget_wrapped])
+2018-07-30 16:18:02.6760 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\bin\Debug\netcoreapp2.1\NLog.config...
+2018-07-30 16:18:02.7026 Info Found 52 configuration items
+2018-07-30 16:18:02.7250 Info Configuration initialized.
+2018-07-30 16:18:02.7499 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.7.7958. Product version: 4.5.7.
+2018-07-30 16:18:27.5145 Info Message Template Auto Format enabled
+2018-07-30 16:18:27.5145 Info Found 52 configuration items
+2018-07-30 16:40:25.3656 Info Message Template Auto Format enabled
+2018-07-30 16:40:25.3839 Info Loading assembly: NLog.Web.AspNetCore
+2018-07-30 16:40:25.3839 Info Loading assembly: NLog.Slack
+2018-07-30 16:40:25.5583 Info Adding target AsyncWrapper Target[allfile](File Target[allfile_wrapped])
+2018-07-30 16:40:25.5737 Info Adding target AsyncWrapper Target[ownFile-web](File Target[ownFile-web_wrapped])
+2018-07-30 16:40:25.5980 Info Adding target AsyncWrapper Target[slackTarget](Slack Target[slackTarget_wrapped])
+2018-07-30 16:40:25.5980 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\bin\Debug\netcoreapp2.1\NLog.config...
+2018-07-30 16:40:25.6363 Info Found 52 configuration items
+2018-07-30 16:40:25.6683 Info Configuration initialized.
+2018-07-30 16:40:25.6843 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.7.7958. Product version: 4.5.7.
+2018-07-30 17:04:36.0216 Info Message Template Auto Format enabled
+2018-07-30 17:04:36.0450 Info Loading assembly: NLog.Web.AspNetCore
+2018-07-30 17:04:36.0450 Info Loading assembly: NLog.Slack
+2018-07-30 17:04:36.3494 Info Adding target AsyncWrapper Target[allfile](File Target[allfile_wrapped])
+2018-07-30 17:04:36.4857 Info Adding target AsyncWrapper Target[ownFile-web](File Target[ownFile-web_wrapped])
+2018-07-30 17:04:36.5992 Info Adding target AsyncWrapper Target[slackTarget](Slack Target[slackTarget_wrapped])
+2018-07-30 17:04:36.6190 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\bin\Debug\netcoreapp2.1\NLog.config...
+2018-07-30 17:04:36.6405 Info Found 52 configuration items
+2018-07-30 17:04:36.6821 Info Configuration initialized.
+2018-07-30 17:04:36.7052 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.7.7958. Product version: 4.5.7.
+2018-07-30 17:04:44.6651 Info Message Template Auto Format enabled
+2018-07-30 17:04:44.6651 Info Found 52 configuration items
+2018-07-30 17:04:44.8617 Info Loading assembly: NLog.Web.AspNetCore
+2018-07-30 17:04:44.8636 Info Loading assembly: NLog.Slack
+2018-07-30 17:04:44.8636 Info Adding target AsyncWrapper Target[allfile](File Target[allfile_wrapped])
+2018-07-30 17:04:44.8636 Info Adding target AsyncWrapper Target[ownFile-web](File Target[ownFile-web_wrapped])
+2018-07-30 17:04:44.8636 Info Adding target AsyncWrapper Target[slackTarget](Slack Target[slackTarget_wrapped])
+2018-07-30 17:04:44.8636 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\nlog.config...
+2018-07-30 17:04:44.8636 Info Closing old configuration.
+2018-07-30 17:04:44.9221 Info Found 52 configuration items
+2018-07-30 17:08:13.4228 Info Message Template Auto Format enabled
+2018-07-30 17:08:13.4667 Info Loading assembly: NLog.Web.AspNetCore
+2018-07-30 17:08:13.4763 Info Loading assembly: NLog.Slack
+2018-07-30 17:08:13.7170 Info Adding target AsyncWrapper Target[allfile](File Target[allfile_wrapped])
+2018-07-30 17:08:13.7402 Info Adding target AsyncWrapper Target[ownFile-web](File Target[ownFile-web_wrapped])
+2018-07-30 17:08:13.7695 Info Adding target AsyncWrapper Target[slackTarget](Slack Target[slackTarget_wrapped])
+2018-07-30 17:08:13.7843 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\bin\Debug\netcoreapp2.1\NLog.config...
+2018-07-30 17:08:13.8047 Info Found 52 configuration items
+2018-07-30 17:08:13.8473 Info Configuration initialized.
+2018-07-30 17:08:13.8835 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.7.7958. Product version: 4.5.7.
+2018-07-30 17:08:20.8940 Info Message Template Auto Format enabled
+2018-07-30 17:08:20.8940 Info Found 52 configuration items
+2018-07-30 17:08:21.1341 Info Loading assembly: NLog.Web.AspNetCore
+2018-07-30 17:08:21.1341 Info Loading assembly: NLog.Slack
+2018-07-30 17:08:21.1341 Info Adding target AsyncWrapper Target[allfile](File Target[allfile_wrapped])
+2018-07-30 17:08:21.1341 Info Adding target AsyncWrapper Target[ownFile-web](File Target[ownFile-web_wrapped])
+2018-07-30 17:08:21.1341 Info Adding target AsyncWrapper Target[slackTarget](Slack Target[slackTarget_wrapped])
+2018-07-30 17:08:21.1341 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\nlog.config...
+2018-07-30 17:08:21.1468 Info Closing old configuration.
+2018-07-30 17:08:21.1885 Info Found 52 configuration items
+2018-07-30 17:41:54.3050 Info Message Template Auto Format enabled
+2018-07-30 17:41:54.3264 Info Loading assembly: NLog.Web.AspNetCore
+2018-07-30 17:41:54.3393 Info Loading assembly: NLog.Slack
+2018-07-30 17:41:54.7108 Info Adding target AsyncWrapper Target[allfile](File Target[allfile_wrapped])
+2018-07-30 17:41:54.7108 Info Adding target AsyncWrapper Target[ownFile-web](File Target[ownFile-web_wrapped])
+2018-07-30 17:41:54.7798 Info Adding target AsyncWrapper Target[slackTarget](Slack Target[slackTarget_wrapped])
+2018-07-30 17:41:54.7947 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\bin\Debug\netcoreapp2.1\NLog.config...
+2018-07-30 17:41:54.8205 Info Found 52 configuration items
+2018-07-30 17:41:54.8597 Info Configuration initialized.
+2018-07-30 17:41:54.9389 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.7.7958. Product version: 4.5.7.
+2018-07-30 17:42:09.1233 Info Message Template Auto Format enabled
+2018-07-30 17:42:09.1365 Info Found 52 configuration items
+2018-07-30 17:42:09.1365 Info Loading assembly: NLog.Web.AspNetCore
+2018-07-30 17:42:09.1365 Info Loading assembly: NLog.Slack
+2018-07-30 17:42:09.1450 Info Adding target AsyncWrapper Target[allfile](File Target[allfile_wrapped])
+2018-07-30 17:42:09.1450 Info Adding target AsyncWrapper Target[ownFile-web](File Target[ownFile-web_wrapped])
+2018-07-30 17:42:09.1450 Info Adding target AsyncWrapper Target[slackTarget](Slack Target[slackTarget_wrapped])
+2018-07-30 17:42:09.1450 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\nlog.config...
+2018-07-30 17:42:09.1450 Info Closing old configuration.
+2018-07-30 17:42:09.2086 Info Found 52 configuration items
+2018-07-30 18:01:36.2434 Info Message Template Auto Format enabled
+2018-07-30 18:01:36.2579 Info Loading assembly: NLog.Web.AspNetCore
+2018-07-30 18:01:36.2579 Info Loading assembly: NLog.Slack
+2018-07-30 18:01:36.3994 Info Adding target AsyncWrapper Target[allfile](File Target[allfile_wrapped])
+2018-07-30 18:01:36.4317 Info Adding target AsyncWrapper Target[ownFile-web](File Target[ownFile-web_wrapped])
+2018-07-30 18:01:36.4539 Info Adding target AsyncWrapper Target[slackTarget](Slack Target[slackTarget_wrapped])
+2018-07-30 18:01:36.4704 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\bin\Debug\netcoreapp2.1\NLog.config...
+2018-07-30 18:01:36.4945 Info Found 52 configuration items
+2018-07-30 18:01:36.5368 Info Configuration initialized.
+2018-07-30 18:01:36.6364 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.5.7.7958. Product version: 4.5.7.
+2018-07-30 18:01:43.3513 Info Message Template Auto Format enabled
+2018-07-30 18:01:43.3513 Info Found 52 configuration items
+2018-07-30 18:01:43.7067 Info Loading assembly: NLog.Web.AspNetCore
+2018-07-30 18:01:43.7067 Info Loading assembly: NLog.Slack
+2018-07-30 18:01:43.7067 Info Adding target AsyncWrapper Target[allfile](File Target[allfile_wrapped])
+2018-07-30 18:01:43.7067 Info Adding target AsyncWrapper Target[ownFile-web](File Target[ownFile-web_wrapped])
+2018-07-30 18:01:43.7067 Info Adding target AsyncWrapper Target[slackTarget](Slack Target[slackTarget_wrapped])
+2018-07-30 18:01:43.7067 Info Configured from an XML element in C:\Repos\MemoriesTimeLine\MTL.WebAPI\nlog.config...
+2018-07-30 18:01:43.7067 Info Closing old configuration.
+2018-07-30 18:01:43.7513 Info Found 52 configuration items
