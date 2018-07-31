@@ -2,8 +2,6 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-<app-spinner [isRunning]="isRequesting"></app-spinner>
-
 <table class='table'>
   <thead>
     <tr>
@@ -14,6 +12,7 @@
     </tr>
   </thead>
   <tbody>
+    <app-spinner [isRunning]="isRequesting"></app-spinner>
     <tr *ngFor="let forecast of forecasts">
       <td>{{ forecast.dateFormatted }}</td>
       <td>{{ forecast.temperatureC }}</td>

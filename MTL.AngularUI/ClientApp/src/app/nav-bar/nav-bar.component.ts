@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { UserService } from '../shared/services/user.service';
+import { UserDetails } from '../shared/Models/userDetails';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,7 +16,10 @@ export class NavBarComponent implements OnInit,OnDestroy {
   status: boolean;
   subscription: Subscription;
 
+  userDetails: UserDetails;
+
   constructor(private userService: UserService) {
+
   }
 
   logout() {
@@ -24,6 +28,14 @@ export class NavBarComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.subscription = this.userService.authNavStatus$.subscribe(status => this.status = status);
+
+    this.userService.getUserDetails()
+      .subscribe((userDetails: UserDetails) => {
+        this.userDetails = userDetails;
+      },
+        error => {
+          //this.notificationService.printErrorMessage(error);
+        });
   }
 
   ngOnDestroy() {

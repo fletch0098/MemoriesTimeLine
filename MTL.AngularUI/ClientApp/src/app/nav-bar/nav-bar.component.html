@@ -8,6 +8,11 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <!--<a class="navbar-brand" href="#" [routerLink]='["/"]'>
+    <span class="nav navbar-nav "><img src="/assets/bootstrap-solid.svg" width="30" height="30" class="glyphicon d-inline-block align-top" alt="" [routerLink]='["/"]'> MTL</span>
+  </a>-->
+      <a class="navbar-brand" href="#"> <img class="logo" src="http://bootstrap-ecommerce.com/main/images/logo-white.png" height="40"> LOGO</a>
+
       <a class='navbar-brand' [routerLink]='["/"]'>AppTitle</a>
     </div>
 
@@ -17,6 +22,11 @@
         <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
           <a [routerLink]='["/"]' (click)='collapse()'>
             <span class='glyphicon glyphicon-home'></span> Home
+          </a>
+        </li>
+        <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+          <a [routerLink]='["/timeline/home"]'>
+            <span class='	glyphicon glyphicon-stats'></span> Time Lines
           </a>
         </li>
         <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
@@ -35,7 +45,7 @@
         <li *ngIf="!status"><a [routerLink]='["/register"]'><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='glyphicon glyphicon-th-list'></span> Account <span class="caret"></span></a>
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='glyphicon glyphicon-user'></span> {{userDetails?.firstName}} {{userDetails?.lastName}}<span class="caret"></span></a>
           <ul class="dropdown-menu">
 
             <li *ngIf="status"><a [routerLink]='["/dashboard/home"]'>Dashboard</a></li>
