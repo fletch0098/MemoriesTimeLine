@@ -25,6 +25,7 @@ import { AccountModule } from './account/account.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 /* TimeLine Imports */
 import { TimeLineModule } from './time-line/timeline.module';
+import { FooterComponent } from './footer/footer.component';
 
 const appInitializerFn = (appConfig: ConfigurationService) => {
   return () => {
@@ -39,7 +40,8 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
     HomeComponent,
     FetchDataComponent,
     AppSettingsComponent,
-    NavBarComponent
+    NavBarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
