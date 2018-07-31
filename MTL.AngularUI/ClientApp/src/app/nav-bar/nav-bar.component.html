@@ -8,23 +8,33 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <!--<a class="navbar-brand" href="#" [routerLink]='["/"]'>
+    <span class="nav navbar-nav "><img src="/assets/bootstrap-solid.svg" width="30" height="30" class="glyphicon d-inline-block align-top" alt="" [routerLink]='["/"]'> MTL</span>
+  </a>-->
+      <a class="navbar-brand" href="#"> <img class="logo" src="http://bootstrap-ecommerce.com/main/images/logo-white.png" height="40"> LOGO</a>
+
       <a class='navbar-brand' [routerLink]='["/"]'>AppTitle</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+        <li [routerLinkActive]='["active"]' [routerLinkActiveOptions]='{ exact: true }'>
           <a [routerLink]='["/"]' (click)='collapse()'>
             <span class='glyphicon glyphicon-home'></span> Home
           </a>
         </li>
-        <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+        <li [routerLinkActive]='["active"]' [routerLinkActiveOptions]='{ exact: true }'>
+          <a [routerLink]='["/timeline/home"]'>
+            <span class='	glyphicon glyphicon-stats'></span> Time Lines
+          </a>
+        </li>
+        <li [routerLinkActive]='["active"]' [routerLinkActiveOptions]='{ exact: true }'>
           <a [routerLink]='["/fetch-data"]' (click)='collapse()'>
             <span class=''></span> Test API
           </a>
         </li>
-        <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+        <li [routerLinkActive]='["active"]' [routerLinkActiveOptions]='{ exact: true }'>
           <a [routerLink]='["/app-settings"]' (click)='collapse()'>
             <span class=''></span> App Settings
           </a>
@@ -35,7 +45,7 @@
         <li *ngIf="!status"><a [routerLink]='["/register"]'><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='glyphicon glyphicon-th-list'></span> Account <span class="caret"></span></a>
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class='glyphicon glyphicon-user'></span> {{userDetails?.firstName}} {{userDetails?.lastName}}<span class="caret"></span></a>
           <ul class="dropdown-menu">
 
             <li *ngIf="status"><a [routerLink]='["/dashboard/home"]'>Dashboard</a></li>

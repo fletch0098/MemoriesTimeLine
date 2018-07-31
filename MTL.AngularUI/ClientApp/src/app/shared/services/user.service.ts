@@ -3,6 +3,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 import { UserRegistration } from '../Models/user-registration';
 import { ConfigurationService } from './configuration.service';
+import { UserDetails } from '../Models/userDetails';
 
 import {BaseService} from "./base.service";
 
@@ -89,5 +90,16 @@ export class UserService extends BaseService {
       })
       .catch(this.handleError);
   }
+
+  getUserDetails(): Observable<UserDetails> {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let authToken = localStorage.getItem('auth_token');
+    headers.append('Authorization', `Bearer ${authToken}`);
+
+    return this.http.get(this.baseUrl + "api/dashboard/userdetails", { headers })
+      .map(response => response.json())
+      .catch(this.handleError);
+  }  
 }
 
