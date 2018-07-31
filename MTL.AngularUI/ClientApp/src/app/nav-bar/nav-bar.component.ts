@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { UserService } from '../shared/services/user.service';
-import { UserDetails } from '../shared/Models/userDetails';
+import { UserDetails } from '../shared/models/userDetails';
 
 @Component({
   selector: 'app-nav-bar',
@@ -29,13 +29,21 @@ export class NavBarComponent implements OnInit,OnDestroy {
   ngOnInit() {
     this.subscription = this.userService.authNavStatus$.subscribe(status => this.status = status);
 
-    this.userService.getUserDetails()
-      .subscribe((userDetails: UserDetails) => {
-        this.userDetails = userDetails;
-      },
-        error => {
-          //this.notificationService.printErrorMessage(error);
-        });
+    console.log('NavBar - isLoggegIn: ' + this.userService.isLoggedIn());
+
+    if (this.userService.isLoggedIn()) {
+      this.userService.getUserDetails()
+        .subscribe((userDetails: UserDetails) => {
+          console.log('NavBar - userDetails: ' + userDetails);
+          this.userDetails = userDetails;
+        },
+          error => {
+            //this.notificationService.printErrorMessage(error);
+          });
+    }
+    
+
+    
   }
 
   ngOnDestroy() {

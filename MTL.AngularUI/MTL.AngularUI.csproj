@@ -19,8 +19,15 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\app\account\models\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\app\account\models\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\src\app\account\models\**" />
+    <None Remove="ClientApp\src\app\account\models\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,7 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\account\models\" />
     <Folder Include="ClientApp\src\app\time-line\models\" />
     <Folder Include="ClientApp\src\app\time-line\services\" />
   </ItemGroup>

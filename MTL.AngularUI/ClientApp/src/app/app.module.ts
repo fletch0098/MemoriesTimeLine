@@ -9,7 +9,6 @@ import { HttpModule, XHRBackend } from '@angular/http';
 import { AuthenticateXHRBackend } from './authenticate-xhr.backend';
 
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ConfigurationService } from './shared/services/configuration.service';
@@ -36,7 +35,6 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
 @NgModule({
   declarations: [
     AppComponent,
-    NavMenuComponent,
     HomeComponent,
     FetchDataComponent,
     AppSettingsComponent,
