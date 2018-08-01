@@ -33,6 +33,8 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\shared\Models\appSettings.ts" />
     <None Remove="ClientApp\src\app\shared\Models\facebookSettings.ts" />
+    <None Remove="ClientApp\src\app\time-line\models\memory.ts" />
+    <None Remove="ClientApp\src\app\time-line\models\timeLine.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,10 +44,11 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\shared\Models\facebookSettings.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\Models\appSettings.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\time-line\models\memory.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\time-line\models\timeLine.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\time-line\models\" />
     <Folder Include="ClientApp\src\app\time-line\services\" />
   </ItemGroup>
 

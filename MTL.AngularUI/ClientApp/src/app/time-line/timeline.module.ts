@@ -8,6 +8,7 @@ import { RootComponent } from './root/root.component';
 import { HomeComponent } from './home/home.component';
 
 import { AuthGuard } from '../auth.guard';
+import { TimeLineComponent } from './time-line/time-line.component';
 
 
 @NgModule({
@@ -17,7 +18,7 @@ import { AuthGuard } from '../auth.guard';
     routing,
     SharedModule
   ],
-  declarations: [RootComponent,HomeComponent],
+  declarations: [RootComponent,HomeComponent, TimeLineComponent],
   exports:      [ ],
   providers:    [AuthGuard]
 })
