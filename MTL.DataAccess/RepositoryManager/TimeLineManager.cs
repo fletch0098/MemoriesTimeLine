@@ -4,6 +4,9 @@ using System.Text;
 using MTL.Library.Models.Entities;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using System.Data;
+using System.Web;
+using Microsoft.EntityFrameworkCore;
 
 namespace MTL.DataAccess.RepositoryManager
 {
@@ -24,7 +27,7 @@ namespace MTL.DataAccess.RepositoryManager
 
             try
             {
-                var query = (from q in ctx.TimeLines
+                var query = (from q in ctx.TimeLines.Include("memories")
                              where q.id == id
                              select q).FirstOrDefault();
 
@@ -52,7 +55,7 @@ namespace MTL.DataAccess.RepositoryManager
 
             try
             {
-                var query = ctx.TimeLines;
+                var query = ctx.TimeLines.Include("memories");
 
                 if (query != null)
                 {

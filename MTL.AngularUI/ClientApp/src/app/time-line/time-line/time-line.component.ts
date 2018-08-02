@@ -19,7 +19,7 @@ export class TimeLineComponent implements OnInit {
   }
 
   addMemory() {
-    let memory: memory = { name: "newMemory", description: "this is a test memory" };
+    let memory: memory = { id: 1, timeLineId: 1, name: "newMemory", description: "this is a test memory", date: 07/01/2017, lastModified: '' };
     this.memories.push(memory);
   }
 

@@ -25,6 +25,8 @@ namespace MTL.DataAccess
         {
             context.Database.EnsureCreated();
 
+            string ownerId = "";
+
             // Check for Data
             if (context.Users.Any())
             {
@@ -34,7 +36,7 @@ namespace MTL.DataAccess
 
             _logger.LogInformation(string.Format("{0} : Preparing to seed database", System.Reflection.MethodBase.GetCurrentMethod()));
 
-            //USers
+            //User
             var AppUsers = new AppUser[]
             {
             new AppUser{ UserName = "Admin@mtl.com", FirstName = "Admin", LastName= "Bob", Email="Admin@mtl.com" },
@@ -45,16 +47,17 @@ namespace MTL.DataAccess
             {
                 var result = await _userManager.CreateAsync(seed, "mtlmtl");
                 await context.UserProfile.AddAsync(new UserProfile { IdentityId = seed.Id, Location = "MTL" });
+                ownerId = seed.Id;
             }
             ///User END
 
 
             var TimeLines = new TimeLine[]
             {
-            new TimeLine{  name = "TimeLine1", description = "A time line about ...", lastModified=DateTime.Now},
-            new TimeLine{  name = "TimeLine2", description = "When I lived in ....", lastModified=DateTime.Now},
-            new TimeLine{  name = "TimeLine3", description = "My time in Arkano....", lastModified=DateTime.Now},
-            new TimeLine{  name = "TimeLine4", description = "WTF??", lastModified=DateTime.Now},
+            new TimeLine{  name = "TimeLine1", description = "A time line about ...", lastModified=DateTime.Now, owner = AppUsers[1]},
+            new TimeLine{  name = "TimeLine2", description = "When I lived in ....", lastModified=DateTime.Now, owner = AppUsers[1]},
+            new TimeLine{  name = "TimeLine3", description = "My time in Arkano....", lastModified=DateTime.Now, owner = AppUsers[1]},
+            new TimeLine{  name = "TimeLine4", description = "WTF??", lastModified=DateTime.Now, owner = AppUsers[1]},
             };
 
             foreach (TimeLine seed in TimeLines)
@@ -62,12 +65,17 @@ namespace MTL.DataAccess
                 context.TimeLines.Add(seed);
             }
 
+            DateTime dateOne = DateTime.Parse("06/07/1984");
+            DateTime dateTwo = DateTime.Parse("12/03/2005");
+            DateTime dateThree = DateTime.Parse("04/16/2010");
+            DateTime dateFour = DateTime.Parse("07/01/2017");
+
             var Memories = new Memory[]
             {
-            new Memory{  name = "My first memory", description = "Really old", lastModified=DateTime.Now},
-            new Memory{  name = "Second", description = "Old", lastModified=DateTime.Now},
-            new Memory{  name = "Third", description = "Not too bad", lastModified=DateTime.Now},
-            new Memory{  name = "Fourth", description = "Yesterday?", lastModified=DateTime.Now},
+            new Memory{  name = "My first memory", description = "Really old", lastModified=DateTime.Now, date = dateOne, timeLine = TimeLines[0] },
+            new Memory{  name = "Second", description = "Old", lastModified=DateTime.Now, date = dateTwo, timeLine = TimeLines[0]},
+            new Memory{  name = "Third", description = "Not too bad", lastModified=DateTime.Now, date = dateThree, timeLine = TimeLines[0]},
+            new Memory{  name = "Fourth", description = "Yesterday?", lastModified=DateTime.Now, date = dateFour, timeLine = TimeLines[0]},
             };
 
             foreach (Memory seed in Memories)
