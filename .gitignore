@@ -330,4 +330,4 @@ ASALocalRun/
 .mfractor/
 
 # Log files
-MTL.WebAPI/Logs/
+#.txt

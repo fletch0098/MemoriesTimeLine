@@ -65,10 +65,10 @@ namespace MTL.DataAccess
                 context.TimeLines.Add(seed);
             }
 
-            DateTime dateOne = DateTime.Parse("06/07/1984");
-            DateTime dateTwo = DateTime.Parse("12/03/2005");
-            DateTime dateThree = DateTime.Parse("04/16/2010");
-            DateTime dateFour = DateTime.Parse("07/01/2017");
+            DateTime dateOne = new DateTime(2010, 4, 16);
+            DateTime dateTwo = new DateTime(1984, 6, 7);
+            DateTime dateThree = new DateTime(2010, 09, 16); ;
+            DateTime dateFour = new DateTime(2017, 7, 1);
 
             var Memories = new Memory[]
             {
