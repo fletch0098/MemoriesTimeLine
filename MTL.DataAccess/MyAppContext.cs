@@ -20,11 +20,11 @@ namespace MTL.DataAccess
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<ControlledEntry>().ToTable("ControlledEntries");
             modelBuilder.Entity<Memory>().ToTable("Memories");
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<TimeLine> TimeLines { get; set; }
         public DbSet<Memory> Memories { get; set; }
         public DbSet<UserProfile> UserProfile { get; set; }
 

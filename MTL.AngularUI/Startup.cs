@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MTL.Library.Common;
+using MTL.Library.Models.Authentication;
 
 namespace MTL.AngularUI
 {
@@ -26,6 +27,9 @@ namespace MTL.AngularUI
 
             var constants = Configuration.GetSection("Constants");
             services.Configure<Constants>(constants);
+
+            // Register the ConfigurationBuilder instance of FacebookAuthSettings
+            services.Configure<FacebookAuthSettings>(Configuration.GetSection(nameof(FacebookAuthSettings)));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

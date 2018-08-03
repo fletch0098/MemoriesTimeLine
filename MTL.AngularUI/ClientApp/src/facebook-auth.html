@@ -23,8 +23,8 @@
         message.status = false;
         message.error = getParameterByName("error");
         message.errorDescription = getParameterByName("error_description");
-      }
-    window.opener.postMessage(JSON.stringify(message), "https://localhost:44311");
+    }
+    window.opener.postMessage(JSON.stringify(message), getBaseURL());
   </script>
   </body>
 </html>

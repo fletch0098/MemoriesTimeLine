@@ -1,15 +1,20 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Rx'; 
+
 import { appSetting } from '../Models/appSettings';
+import { facebookSettings } from '../Models/facebookSettings';
+import { BaseService } from '../../shared/services/base.service';
 
 @Injectable()
-export class ConfigurationService {
+export class ConfigurationService extends BaseService {
 
   _appSettings: appSetting;
+  _facebookSettings: facebookSettings;
 
-  constructor(private httpClient: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-
+  constructor(private httpClient: HttpClient, private http: Http, @Inject('BASE_URL') private baseUrl: string) {
+    super();
   }
 
   loadConfig() {
@@ -32,6 +37,23 @@ export class ConfigurationService {
   getAppURL() {
     return this._appSettings.appURL;
   }
+
+  //getFacebookSettings() {
+
+  //  this.httpClient.get<facebookSettings>(this.baseUrl + 'api/configuration/GetFacebookAuthSettings').subscribe(result => {
+
+  //  }, error => console.error(error));
+
+  //}
+
+  getFacebookSettings(): Observable<facebookSettings> {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    return this.http.get(this.baseUrl + "api/configuration/GetFacebookAuthSettings", { headers })
+      .map(response => response.json())
+      .catch(this.handleError);
+  }  
 
 }
 
