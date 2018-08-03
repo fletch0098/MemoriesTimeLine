@@ -44,7 +44,7 @@ namespace MTL.WebAPI.Controllers
 
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
 
-            await _appDbContext.UserProfile.AddAsync(new UserProfile { IdentityId = userIdentity.Id, Location = model.Location });
+            await _appDbContext.UserProfile.AddAsync(new UserProfile { identityId = userIdentity.Id, location = model.Location });
             await _appDbContext.SaveChangesAsync();
 
             return new OkObjectResult("Account created");

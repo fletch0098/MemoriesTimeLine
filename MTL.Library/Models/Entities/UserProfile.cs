@@ -6,11 +6,17 @@ namespace MTL.Library.Models.Entities
 {
     public class UserProfile
     {
-        public int Id { get; set; }
-        public string IdentityId { get; set; }
-        public AppUser Identity { get; set; }  // navigation property
-        public string Location { get; set; }
-        public string Locale { get; set; }
-        public string Gender { get; set; }
+        public int id { get; set; }
+        public string identityId { get; set; }
+        public string location { get; set; }
+        public string locale { get; set; }
+        public string gender { get; set; }
+        public DateTime lastModified { get; set; }
+
+        public virtual AppUser identity { get; set; }  // navigation property
+
+
+
+
     }
 }

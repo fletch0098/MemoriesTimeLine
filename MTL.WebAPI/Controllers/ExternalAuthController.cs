@@ -73,7 +73,7 @@ namespace QREntry.WebAPI.Controllers
 
                 if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
 
-                await _appDbContext.UserProfile.AddAsync(new UserProfile { IdentityId = appUser.Id, Location = "", Locale = userInfo.Locale, Gender = userInfo.Gender });
+                await _appDbContext.UserProfile.AddAsync(new UserProfile { identityId = appUser.Id, location = "", locale = userInfo.Locale, gender = userInfo.Gender });
                 await _appDbContext.SaveChangesAsync();
             }
 

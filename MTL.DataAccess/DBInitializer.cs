@@ -46,7 +46,7 @@ namespace MTL.DataAccess
             foreach (AppUser seed in AppUsers)
             {
                 var result = await _userManager.CreateAsync(seed, "mtlmtl");
-                await context.UserProfile.AddAsync(new UserProfile { IdentityId = seed.Id, Location = "MTL" });
+                await context.UserProfile.AddAsync(new UserProfile { identityId = seed.Id, location = "MTL", gender= "Male", locale="en-US", lastModified = DateTime.Now });
                 ownerId = seed.Id;
             }
             ///User END
@@ -82,18 +82,6 @@ namespace MTL.DataAccess
             {
                 context.Memories.Add(seed);
             }
-
-            //var computers = new Computer[]
-            //{
-            //new Computer{ ConfiguracionName = "The Basic", HardDrive = "512GB HDD", Memory = Memories[0], Processor = "AMD", LastModified=DateTime.Now},
-            //new Computer{ ConfiguracionName = "The Internet", HardDrive = "128GB SDD", Memory = Memories[1], Processor = "Intel i3", LastModified=DateTime.Now},
-            //new Computer{ ConfiguracionName = "The Gamer", HardDrive = "1TB HDD", Memory = Memories[2], Processor = "Intel i5", LastModified=DateTime.Now},
-            //new Computer{ ConfiguracionName = "The Beast", HardDrive = "512GB SDD", Memory = Memories[3], Processor = "Intel i7", LastModified=DateTime.Now}
-            //};
-            //foreach (Computer c in computers)
-            //{
-            //    context.Computers.Add(c);
-            //}
 
             try
             {

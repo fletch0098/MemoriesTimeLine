@@ -33,18 +33,18 @@ namespace MTL.WebAPI.Controllers
         {
             // retrieve the user info
             var userId = _caller.Claims.Single(c => c.Type == "id");
-            UserProfile person = await _appDbContext.UserProfile.Include(c => c.Identity).SingleAsync(c => c.Identity.Id == userId.Value);
+            UserProfile person = await _appDbContext.UserProfile.Include(c => c.identity).SingleAsync(c => c.identity.Id == userId.Value);
 
             return new OkObjectResult(new
             {
                 Message = "This is secure API and user data!",
-                person.Identity.FirstName,
-                person.Identity.LastName,
-                person.Identity.PictureUrl,
-                person.Identity.FacebookId,
-                person.Location,
-                person.Locale,
-                person.Gender
+                person.identity.FirstName,
+                person.identity.LastName,
+                person.identity.PictureUrl,
+                person.identity.FacebookId,
+                person.location,
+                person.locale,
+                person.gender
             });
         }
 
@@ -54,17 +54,17 @@ namespace MTL.WebAPI.Controllers
         {
             // retrieve the user info
             var userId = _caller.Claims.Single(c => c.Type == "id");
-            UserProfile person = await _appDbContext.UserProfile.Include(c => c.Identity).SingleAsync(c => c.Identity.Id == userId.Value);
+            UserProfile person = await _appDbContext.UserProfile.Include(c => c.identity).SingleAsync(c => c.identity.Id == userId.Value);
 
             return new OkObjectResult(new
             {
-                person.Identity.FirstName,
-                person.Identity.LastName,
-                person.Identity.PictureUrl,
-                person.Identity.FacebookId,
-                person.Location,
-                person.Locale,
-                person.Gender
+                person.identity.FirstName,
+                person.identity.LastName,
+                person.identity.PictureUrl,
+                person.identity.FacebookId,
+                person.location,
+                person.locale,
+                person.gender
             });
         }
     }
