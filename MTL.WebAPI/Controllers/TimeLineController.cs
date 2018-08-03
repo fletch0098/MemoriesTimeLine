@@ -146,31 +146,31 @@ namespace MTL.WebAPI.Controllers
         }
 
 
-        // GET api/[Controller]
-        [HttpGet]
-        public IActionResult GetMyTimeLines()
-        {
-            _logger.LogTrace("GetAll() api/TimeLine/GetMyTimeLines");
-            IActionResult ret = null;
+        //// GET api/[Controller]
+        //[HttpGet]
+        //public IActionResult GetMyTimeLines()
+        //{
+        //    _logger.LogTrace("GetAll() api/TimeLine/GetMyTimeLines");
+        //    IActionResult ret = null;
 
-            // retrieve the user info
-            var userId = _caller.Claims.Single(c => c.Type == "id");
+        //    // retrieve the user info
+        //    var userId = _caller.Claims.Single(c => c.Type == "id");
 
-            var item = (from q in _appDbContext.TimeLines.Include("memories")
-                                    where q.ownerId == userId.Value
-                                    select q).ToList();
+        //    var item = (from q in _appDbContext.TimeLines.Include("memories")
+        //                            where q.ownerId == userId.Value
+        //                            select q).ToList();
 
-            if (item == null)
-            {
-                ret = NotFound();
-            }
-            else
-            {
-                ret = new ObjectResult(item);
-            }
+        //    if (item == null)
+        //    {
+        //        ret = NotFound();
+        //    }
+        //    else
+        //    {
+        //        ret = new ObjectResult(item);
+        //    }
 
-            _logger.LogTrace("GetAll() api/TimeLine returned : {0} TimeLines", item.Count());
-            return ret;
-        }
+        //    _logger.LogTrace("GetAll() api/TimeLine returned : {0} TimeLines", item.Count());
+        //    return ret;
+        //}
     }
 }
