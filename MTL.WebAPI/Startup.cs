@@ -151,22 +151,26 @@ namespace MTL.WebAPI
             });
 
             //EF DB
-            //services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-            //b => b.MigrationsAssembly("QREntry.DataAccess")));
+            services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            b => b.MigrationsAssembly("MTL.WebAPI")));
 
             //EF In-Memory
-            services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("DataBase"));
+            //services.AddDbContext<MyAppContext>(opt => opt.UseInMemoryDatabase("MTLDataBase"));
 
             //DI
             services.AddSingleton(typeof(IDataRepository<Memory, int>), typeof(MemoryManager));
             services.AddTransient(typeof(IDataRepository<Memory, int>), typeof(MemoryManager));
+
+            services.AddSingleton(typeof(IDataRepository<TimeLine, int>), typeof(TimeLineManager));
+            services.AddTransient(typeof(IDataRepository<TimeLine, int>), typeof(TimeLineManager));
+            
             services.AddTransient<DbInitializer>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -228,6 +232,12 @@ namespace MTL.WebAPI
                     defaults: new { controller = "Swagger", action = "Index" });
             });
 
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
+        }
+
+        private void OnShutdown()
+        {
+            // Do your cleanup here
         }
     }
 }

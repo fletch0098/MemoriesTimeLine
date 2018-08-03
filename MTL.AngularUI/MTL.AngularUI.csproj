@@ -19,12 +19,22 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\app\account\models\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\app\account\models\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\src\app\account\models\**" />
+    <None Remove="ClientApp\src\app\account\models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ClientApp\src\app\shared\Models\appSettings.ts" />
+    <None Remove="ClientApp\src\app\shared\Models\facebookSettings.ts" />
+    <None Remove="ClientApp\src\app\time-line\models\memory.ts" />
+    <None Remove="ClientApp\src\app\time-line\models\timeLine.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +42,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\Models\facebookSettings.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\Models\appSettings.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\time-line\models\memory.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\time-line\models\timeLine.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

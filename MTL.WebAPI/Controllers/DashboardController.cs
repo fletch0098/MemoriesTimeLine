@@ -47,5 +47,25 @@ namespace MTL.WebAPI.Controllers
                 person.Gender
             });
         }
+
+        // GET api/dashboard/getuserdetails
+        [HttpGet]
+        public async Task<IActionResult> UserDetails()
+        {
+            // retrieve the user info
+            var userId = _caller.Claims.Single(c => c.Type == "id");
+            UserProfile person = await _appDbContext.UserProfile.Include(c => c.Identity).SingleAsync(c => c.Identity.Id == userId.Value);
+
+            return new OkObjectResult(new
+            {
+                person.Identity.FirstName,
+                person.Identity.LastName,
+                person.Identity.PictureUrl,
+                person.Identity.FacebookId,
+                person.Location,
+                person.Locale,
+                person.Gender
+            });
+        }
     }
 }

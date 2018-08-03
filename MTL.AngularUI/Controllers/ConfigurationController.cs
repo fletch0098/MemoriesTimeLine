@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MTL.Library.Models.Common;
 using MTL.Library.Common;
+using MTL.Library.Models.Authentication;
 
 namespace MTL.AngularUI.Controllers
 { 
@@ -15,11 +16,13 @@ namespace MTL.AngularUI.Controllers
     {
         private readonly AppSettings _appSettings;
         private readonly Constants _constants;
+        private readonly FacebookAuthSettings _fbAuthSettings;
 
-        public ConfigurationController(IOptions<AppSettings> appSettings, IOptions<Constants> constants)
+        public ConfigurationController(IOptions<AppSettings> appSettings, IOptions<Constants> constants, IOptions<FacebookAuthSettings> fbAuthSettingsAccessor)
         {
             _appSettings = appSettings.Value;
             _constants = constants.Value;
+            _fbAuthSettings = fbAuthSettingsAccessor.Value;
         }
 
         [HttpGet("[action]")]
@@ -32,6 +35,12 @@ namespace MTL.AngularUI.Controllers
         public ActionResult<Constants> GetConstants()
         {
             return _constants;
+        }
+
+        [HttpGet("[action]")]
+        public ActionResult<FacebookAuthSettings> GetFacebookAuthSettings()
+        {
+            return _fbAuthSettings;
         }
     }
 }
