@@ -9,6 +9,11 @@ using MTL.DataAccess;
 using MTL.DataAccess.RepositoryManager;
 using MTL.Library.Models.Entities;
 
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+
 namespace MTL.WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -17,11 +22,15 @@ namespace MTL.WebAPI.Controllers
     {
         private readonly ILogger<TimeLineController> _logger;
         private IDataRepository<TimeLine, int> _iRepo;
+        private readonly ClaimsPrincipal _caller;
+        private readonly MyAppContext _appDbContext;
 
-        public TimeLineController(IDataRepository<TimeLine, int> repo, ILogger<TimeLineController> logger)
+        public TimeLineController(IDataRepository<TimeLine, int> repo, ILogger<TimeLineController> logger, IHttpContextAccessor httpContextAccessor, MyAppContext appDbContext)
         {
             _iRepo = repo;
             _logger = logger;
+            _caller = httpContextAccessor.HttpContext.User;
+            _appDbContext = appDbContext;
         }
 
         // GET api/[Controller]
@@ -133,6 +142,34 @@ namespace MTL.WebAPI.Controllers
                 ret = new ObjectResult(deletedId);
             }
             _logger.LogDebug("GET api/TimeLine/Delete returned : {0}", ret);
+            return ret;
+        }
+
+
+        // GET api/[Controller]
+        [HttpGet]
+        public IActionResult GetMyTimeLines()
+        {
+            _logger.LogTrace("GetAll() api/TimeLine/GetMyTimeLines");
+            IActionResult ret = null;
+
+            // retrieve the user info
+            var userId = _caller.Claims.Single(c => c.Type == "id");
+
+            var item = (from q in _appDbContext.TimeLines.Include("memories")
+                                    where q.ownerId == userId.Value
+                                    select q).ToList();
+
+            if (item == null)
+            {
+                ret = NotFound();
+            }
+            else
+            {
+                ret = new ObjectResult(item);
+            }
+
+            _logger.LogTrace("GetAll() api/TimeLine returned : {0} TimeLines", item.Count());
             return ret;
         }
     }

@@ -41,15 +41,39 @@ export class TimeLineService extends BaseService {
   //    .catch(this.handleError);
   //}  
 
-  //getTimeLine(): Observable<UserDetails> {
-  //  let headers = new Headers();
-  //  headers.append('Content-Type', 'application/json');
-  //  let authToken = localStorage.getItem('auth_token');
-  //  headers.append('Authorization', `Bearer ${authToken}`);
+  getTimeLines(): Observable<timeLine[]> {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let authToken = localStorage.getItem('auth_token');
+    //headers.append('Authorization', `Bearer ${authToken}`);
 
-  //  return this.http.get(this.baseUrl + "api/dashboard/userdetails", { headers })
-  //    .map(response => response.json())
-  //    .catch(this.handleError);
-  //}  
+    return this.http.get(this.baseUrl + "api/timeline/", { headers })
+      .map(response => response.json())
+      .catch(this.handleError);
+  }
+
+  getMyTimeLines(): Observable<timeLine[]> {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let authToken = localStorage.getItem('auth_token');
+    headers.append('Authorization', `Bearer ${authToken}`);
+
+    return this.http.get(this.baseUrl + "api/timeline/GetMyTimeLines", { headers })
+      .map(response => response.json())
+      .catch(this.handleError);
+  }
+
+  getTimeLine(id: number): Observable<timeLine> {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let authToken = localStorage.getItem('auth_token');
+    headers.append('Authorization', `Bearer ${authToken}`);
+
+    //const url = `${this.baseUrl}/${id}`
+
+    return this.http.get(this.baseUrl + "api/timeline/get/" + id, { headers })
+      .map(response => response.json())
+      .catch(this.handleError);
+  }  
 }
 

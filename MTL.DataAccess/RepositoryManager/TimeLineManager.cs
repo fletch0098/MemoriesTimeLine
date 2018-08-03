@@ -165,5 +165,33 @@ namespace MTL.DataAccess.RepositoryManager
 
             return ret;
         }
+
+        public IEnumerable<TimeLine> GetTimeLinesByUser(string userId)
+        {
+            IEnumerable<TimeLine> ret = null;
+
+            try
+            {
+                var query = (from q in ctx.TimeLines.Include("memories")
+                             where q.ownerId == userId
+                             select q).ToList();
+
+                if (query != null)
+                {
+                    ret = query.ToList();
+                    _logger.LogInformation(string.Format("{0} : {1} TimeLines found", System.Reflection.MethodBase.GetCurrentMethod(), ret.Count()));
+                }
+                else
+                {
+                    _logger.LogWarning(string.Format("{0} : No TimeLines were found", System.Reflection.MethodBase.GetCurrentMethod()));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, string.Format("{0} : An error occured while looking for TimeLines", System.Reflection.MethodBase.GetCurrentMethod()));
+            }
+
+            return ret;
+        }
     }
 }
