@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 using Microsoft.AspNetCore.Identity;
 
-namespace MTL.Library.Models.Entities
+namespace MTL.DataAccess.Entities
 {
     // Add profile data for application users by adding properties to this class
     public class AppUser : IdentityUser
