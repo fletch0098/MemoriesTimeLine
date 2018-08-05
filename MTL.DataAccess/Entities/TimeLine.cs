@@ -20,12 +20,9 @@ namespace MTL.DataAccess.Entities
 
         public String OwnerId { get; set; }
 
-        public virtual AppUser Owner {get;set;}
-        public virtual ICollection<Memory> Memories { get; set; }
-
         public TimeLine()
         {
-            this.Memories = new HashSet<Memory>();
+
         }
 
         //Detailed
@@ -42,9 +39,8 @@ namespace MTL.DataAccess.Entities
         {
             this.Name = name;
             this.Description = description;
-            this.Owner = owner;
+            this.OwnerId = owner.Id;
             this.LastModified = DateTime.Now;
-            this.Memories = new HashSet<Memory>();
         }
 
     }

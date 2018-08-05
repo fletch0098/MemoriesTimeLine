@@ -8,6 +8,9 @@ namespace MTL.DataAccess.Contracts
 {
     public interface ITimeLineRepository : IRepositoryBase<TimeLine>
     {
+        IEnumerable<TimeLine> GetAllTimeLines();
+        TimeLine GetTimeLineById(int id);
+        TimeLineExtended GetTimeLineWithDetails(int id);
 
     }
 }
