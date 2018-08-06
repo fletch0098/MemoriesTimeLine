@@ -32,9 +32,9 @@ namespace MTL.WebAPI
                 //Seed DB
                 try
                 {
-                    var context = services.GetRequiredService<MyAppContext>();
+                    var context = services.GetRequiredService<RepositoryContext>();
 
-                    var dbInitializer = services.GetRequiredService<DbInitializer>();
+                    var dbInitializer = services.GetRequiredService<RepositoryInitializer>();
 
                     dbInitializer.Initialize(context);
                 }

@@ -28,6 +28,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MTL.DataAccess.Contracts;
+using MTL.DataAccess.Repository;
+
 
 namespace MTL.WebAPI
 {
@@ -90,7 +93,7 @@ namespace MTL.WebAPI
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
             //add identity
-            var builder = services.AddIdentityCore<AppUser>(o =>
+            var builder = services.AddIdentityCore<MTL.DataAccess.Entities.AppUser>(o =>
             {
                 // configure identity options
                 o.Password.RequireDigit = false;
@@ -100,7 +103,7 @@ namespace MTL.WebAPI
                 o.Password.RequiredLength = 6;
             });
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
-            builder.AddEntityFrameworkStores<MyAppContext>().AddDefaultTokenProviders();
+            builder.AddEntityFrameworkStores<RepositoryContext>().AddDefaultTokenProviders();
 
             //Mapping
             services.AddAutoMapper();
@@ -151,7 +154,7 @@ namespace MTL.WebAPI
             });
 
             //EF DB
-            services.AddDbContext<MyAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
             b => b.MigrationsAssembly("MTL.WebAPI")));
 
             //EF In-Memory
@@ -163,8 +166,10 @@ namespace MTL.WebAPI
 
             services.AddSingleton(typeof(IDataRepository<TimeLine, int>), typeof(TimeLineManager));
             services.AddTransient(typeof(IDataRepository<TimeLine, int>), typeof(TimeLineManager));
-            
-            services.AddTransient<DbInitializer>();
+
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
+            services.AddTransient<RepositoryInitializer>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using MTL.DataAccess.Entities;
-using MTL.DataAccess.Repository;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace MTL.DataAccess.Contracts
 {
     public interface IAppUserRepository
     {
-        IEnumerable<AppUser> FindAll();
-        IEnumerable<AppUser> FindByCondition(Expression<Func<AppUser, bool>> expression);
-        //AppUser FindByName(string userName);
-        void Create(AppUser entity, string password);
-        void Update(AppUser entity);
-        void Delete(AppUser entity);
-        void Save();
+        #region ASYNC
+        Task<IdentityResult> CreateAppUserAsync(AppUser entity, string password);
+        Task<AppUser> FindByNameAsync(string userName);
+        Task<AppUser> FindByEmailAsync(string email);
+        Task<bool> CheckPasswordAsync(AppUser userToVerify, string password);
+        #endregion
     }
 }

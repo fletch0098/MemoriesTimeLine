@@ -7,6 +7,9 @@ using MTL.DataAccess.Entities;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MTL.DataAccess.Entities.Extensions;
+using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 // var localUser = await _userManager.FindByNameAsync(userInfo.Email);
 
@@ -16,48 +19,39 @@ namespace MTL.DataAccess.Repository
     {
         protected RepositoryContext RepositoryContext { get; set; }
         private readonly UserManager<AppUser> _userManager;
+        private readonly ILogger<RepositoryWrapper> _logger;
 
-        public AppUserRepository(RepositoryContext repositoryContext, UserManager<AppUser> userManager)
+        public AppUserRepository(RepositoryContext repositoryContext, UserManager<AppUser> userManager, ILogger<RepositoryWrapper> logger)
         {
             this.RepositoryContext = repositoryContext;
             this._userManager = userManager;
+            this._logger = logger;
         }
 
-        public IEnumerable<AppUser> FindAll()
+        #region ASYNC
+        public async Task<IdentityResult> CreateAppUserAsync(AppUser entity, string password)
         {
-            List<AppUser> appUsers = new List<AppUser>();
-            return appUsers;
+            var result = await _userManager.CreateAsync(entity, password);
+            return result;
         }
 
-        public IEnumerable<AppUser> FindByCondition(Expression<Func<AppUser, bool>> expression)
+        public async Task<AppUser> FindByNameAsync(string userName)
         {
-            return this.RepositoryContext.Set<AppUser>().Where(expression);
+            var user = await _userManager.FindByNameAsync(userName);
+            return user;
         }
 
-        public void Create(AppUser entity, string password)
+        public async Task<AppUser> FindByEmailAsync(string email)
         {
-            var result = _userManager.CreateAsync(entity, password);
+            var user = await _userManager.FindByEmailAsync(email);
+            return user;
         }
 
-        //public AppUser FindByNameAsync(string userName)
-        //{
-        //    var user = _userManager.FindByNameAsync(userName);
-        //    return user;
-        //}
-
-        public void Update(AppUser entity)
+        public async Task<bool> CheckPasswordAsync(AppUser userToVerify, string password)
         {
-            this.RepositoryContext.Set<AppUser>().Update(entity);
+            var result = await _userManager.CheckPasswordAsync(userToVerify, password);
+            return result;
         }
-
-        public void Delete(AppUser entity)
-        {
-            this.RepositoryContext.Set<AppUser>().Remove(entity);
-        }
-
-        public void Save()
-        {
-            this.RepositoryContext.SaveChanges();
-        }
+        #endregion
     }
 }

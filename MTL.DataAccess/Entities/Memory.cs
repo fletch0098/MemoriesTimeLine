@@ -22,8 +22,6 @@ namespace MTL.DataAccess.Entities
 
         public int TimeLineId { get; set; }
 
-        public virtual TimeLine TimeLine { get; set; }
-
         //Constructors
         //Basic
         public Memory()
@@ -47,7 +45,7 @@ namespace MTL.DataAccess.Entities
             this.Name = name;
             this.Description = description;
             this.Date = date;
-            this.TimeLine = timeLine;
+            this.TimeLineId = timeLine.Id;
             this.LastModified = DateTime.Now;
         }
     }

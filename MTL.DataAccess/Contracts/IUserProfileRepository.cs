@@ -1,13 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using MTL.DataAccess.Entities;
-using MTL.DataAccess.Repository;
+using System.Threading.Tasks;
 
 namespace MTL.DataAccess.Contracts
 {
     public interface IUserProfileRepository : IRepositoryBase<UserProfile>
     {
+        #region SYNC
+        IEnumerable<UserProfile> GetAllUserProfiles();
+        UserProfile GetUserProfileById(int id);
+        UserProfile GetUserProfileByIdentityId(int ownerId);
+        UserProfileExtended GetUserProfileWithDetails(int id);
+        int CreateUserProfile(UserProfile userProfile);
+        void UpdateUserProfile(int id, UserProfile userProfile);
+        void DeleteUserProfile(int id);
+        #endregion
 
+        #region ASYNC
+        Task<IEnumerable<UserProfile>> GetAllUserProfilesAsync();
+        Task<UserProfile> GetUserProfileByIdAsync(int id);
+        Task<UserProfileExtended> GetUserProfileWithDetailsAsync(int Id);
+        Task<int> CreateUserProfileAsync(UserProfile userProfile);
+        Task UpdateUserProfileAsync(int id, UserProfile userProfile);
+        Task DeleteUserProfileAsync(int id);
+        #endregion
     }
 }

@@ -9,5 +9,6 @@ namespace MTL.DataAccess.Contracts
         ITimeLineRepository TimeLine { get; }
         IMemoryRepository Memory { get; }
         IUserProfileRepository UserProfile { get; }
+        IAppUserRepository AppUser { get; }
     }
 }

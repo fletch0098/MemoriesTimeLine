@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace MTL.DataAccess.Contracts
 {
@@ -15,5 +16,8 @@ namespace MTL.DataAccess.Contracts
         void Update(T entity);
         void Delete(T entity);
         void Save();
+        Task<IEnumerable<T>> FindAllAsync();
+        Task<IEnumerable<T>> FindByConditionAync(Expression<Func<T, bool>> expression);
+        Task SaveAsync();
     }
 }
