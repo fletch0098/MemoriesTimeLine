@@ -30,6 +30,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MTL.DataAccess.Contracts;
 using MTL.DataAccess.Repository;
+using System.IO;
+using System.Reflection;
 
 
 namespace MTL.WebAPI
@@ -79,10 +81,38 @@ namespace MTL.WebAPI
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
-            //Swagger API
+            ////Swagger API
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new Info { Title = appSettings["AppName"] + " API ", Version = appSettings["Version"], Description= "Description", TermsOfService="TOS" });
+            //});
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = appSettings["AppName"] + " API ", Version = appSettings["Version"] });
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = appSettings["Version"],
+                    Title = appSettings["AppName"] + " API ",
+                    Description = "A simple example ASP.NET Core Web API",
+                    TermsOfService = "None",
+                    Contact = new Contact
+                    {
+                        Name = "Shayne Boyer",
+                        Email = string.Empty,
+                        Url = "https://twitter.com/spboyer"
+                    },
+                    License = new License
+                    {
+                        Name = "Use under LICX",
+                        Url = "https://example.com/license"
+                    }
+                });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             //Authtntication
