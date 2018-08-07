@@ -6,17 +6,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace MTL.DataAccess.Repository
 {
     public class TimeLineRepository : RepositoryBase<TimeLine>, ITimeLineRepository
     {
         private readonly ILogger<RepositoryWrapper> _logger;
+        private readonly UserManager<AppUser> _userManager;
 
         #region SYNC
-        public TimeLineRepository(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger)
+        public TimeLineRepository(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger, UserManager<AppUser> userManager)
             : base(repositoryContext, logger)
         {
+            this._userManager = userManager;
         }
 
         public IEnumerable<TimeLine> GetAllTimeLines()
@@ -32,11 +35,10 @@ namespace MTL.DataAccess.Repository
                 .FirstOrDefault();
         }
 
-        public TimeLine GetTimeLineByOwnerId(int ownerId)
+        public IEnumerable<TimeLine> GetTimeLinesByOwnerId(int ownerId)
         {
             return FindByCondition(tl => tl.OwnerId.Equals(ownerId))
-                .DefaultIfEmpty(new TimeLine())
-                .FirstOrDefault();
+                .OrderBy(x => x.LastModified);
         }
 
         public TimeLineExtended GetTimeLineWithDetails(int id)
@@ -45,6 +47,18 @@ namespace MTL.DataAccess.Repository
             {
                 Memories = RepositoryContext.Memories
                     .Where(x => x.TimeLineId == id)
+            };
+        }
+
+        public TimeLineExtended GetTimeLineWithOwner(int id)
+        {
+            var timeLine =  GetTimeLineById(id);
+
+            return new TimeLineExtended(timeLine)
+            {
+                Owner = _userManager.Users
+                .Where(x => x.Id == timeLine.OwnerId)
+                .FirstOrDefault()
             };
         }
 
@@ -80,6 +94,12 @@ namespace MTL.DataAccess.Repository
             return timeLines.OrderBy(x => x.Name);
         }
 
+        public async Task<IEnumerable<TimeLine>> GetTimeLinesByOwnerIdAsync(string ownerId)
+        {
+            var timeLines = await FindByConditionAync(o => o.OwnerId.Equals(ownerId));
+            return timeLines.OrderBy(x => x.LastModified);
+        }
+
         public async Task<TimeLine> GetTimeLineByIdAsync(int id)
         {
             var timeLine = await FindByConditionAync(o => o.Id.Equals(id));
@@ -95,6 +115,16 @@ namespace MTL.DataAccess.Repository
             {
                 Memories = await RepositoryContext.Memories
                     .Where(a => a.TimeLineId == id).ToListAsync()
+            };
+        }
+
+        public async Task<TimeLineExtended> GetTimeLineWithOwnerAsync(int id)
+        {
+            var timeLine = await GetTimeLineByIdAsync(id);
+
+            return new TimeLineExtended(timeLine)
+            {
+                Owner = await _userManager.FindByIdAsync(timeLine.OwnerId)
             };
         }
 

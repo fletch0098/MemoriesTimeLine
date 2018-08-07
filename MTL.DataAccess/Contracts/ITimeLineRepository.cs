@@ -9,8 +9,9 @@ namespace MTL.DataAccess.Contracts
         #region SYNC
         IEnumerable<TimeLine> GetAllTimeLines();
         TimeLine GetTimeLineById(int id);
-        TimeLine GetTimeLineByOwnerId(int ownerId);
+        IEnumerable<TimeLine> GetTimeLinesByOwnerId(int ownerId);
         TimeLineExtended GetTimeLineWithDetails(int id);
+        TimeLineExtended GetTimeLineWithOwner(int id);
         int CreateTimeLine(TimeLine timeLine);
         void UpdateTimeLine(int id, TimeLine timeLine);
         void DeleteTimeLine(int id);
@@ -19,7 +20,9 @@ namespace MTL.DataAccess.Contracts
         #region ASYNC
         Task<IEnumerable<TimeLine>> GetAllTimeLinesAsync();
         Task<TimeLine> GetTimeLineByIdAsync(int id);
+        Task<IEnumerable<TimeLine>> GetTimeLinesByOwnerIdAsync(string ownerId);
         Task<TimeLineExtended> GetTimeLineWithDetailsAsync(int Id);
+        Task<TimeLineExtended> GetTimeLineWithOwnerAsync(int Id);
         Task<int> CreateTimeLineAsync(TimeLine timeLine);
         Task UpdateTimeLineAsync(int id, TimeLine timeLine);
         Task DeleteTimeLineAsync(int id);

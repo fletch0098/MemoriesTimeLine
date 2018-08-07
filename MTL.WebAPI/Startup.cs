@@ -59,6 +59,15 @@ namespace MTL.WebAPI
             var constants = Configuration.GetSection("Constants");
             services.Configure<Constants>(constants);
 
+            //Constants
+            var messages = Configuration.GetSection("Messages");
+            services.Configure<Messages>(messages);
+
+            //services.Configure<Messages>((settings) =>
+            //{
+            //    Configuration.GetSection("Messages").Bind(settings);
+            //});
+
             //CORS
             services.AddCors(options =>
             {

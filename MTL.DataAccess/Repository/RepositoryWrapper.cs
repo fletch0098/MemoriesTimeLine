@@ -32,7 +32,7 @@ namespace MTL.DataAccess.Repository
             {
                 if (_timeLine == null)
                 {
-                    _timeLine = new TimeLineRepository(_repoContext, _logger);
+                    _timeLine = new TimeLineRepository(_repoContext, _logger, _userManager);
                 }
 
                 return _timeLine;

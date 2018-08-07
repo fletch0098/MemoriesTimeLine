@@ -9,5 +9,17 @@
     "AppSecret": "0355dea56e1388664896f04af4d8173c"
   },
   "Constants": {
+  },
+  "Messages": {
+    "Controller": {
+      "SomeError": "Something went wrong: {0}",
+      "Error500": "Internal server error",
+      "NotFound": "{0} with id: {1}, hasn't been found in db.",
+      "ReturnedId": "Returned {0} with id: {1}",
+      "ReturnedDetails": "Returned {0} with details for id: {1}",
+      "NullObject": "{0} object is null.",
+      "InvalidObject": "{0} object is Invalid.",
+      "Deleted": "{0} with id: {1}, Deleted from db"
+    }
   }
 }  
