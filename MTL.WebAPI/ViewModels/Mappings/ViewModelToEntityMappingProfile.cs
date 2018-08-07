@@ -1,4 +1,4 @@
-﻿using MTL.Library.Models.Entities;
+﻿using MTL.DataAccess.Entities;
 using AutoMapper;
 
 

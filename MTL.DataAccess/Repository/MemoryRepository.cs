@@ -33,7 +33,7 @@ namespace MTL.DataAccess.Repository
                 .FirstOrDefault();
         }
 
-        public Memory GetMemoryByTimeLineId(int timeLineId)
+        public Memory GetMemoriesByTimeLineId(int timeLineId)
         {
             return FindByCondition(m => m.TimeLineId.Equals(timeLineId))
                 .DefaultIfEmpty(new Memory())
@@ -42,10 +42,12 @@ namespace MTL.DataAccess.Repository
 
         public MemoryExtended GetMemoryWithDetails(int id)
         {
-            return new MemoryExtended(GetMemoryById(id))
+            var memory = GetMemoryById(id);
+
+            return new MemoryExtended(memory)
             {
                 TimeLine = RepositoryContext.TimeLines
-                    .Where(x => x.Id == id).FirstOrDefault()
+                    .Where(x => x.Id == memory.Id).FirstOrDefault()
             };
         }
 
@@ -74,10 +76,10 @@ namespace MTL.DataAccess.Repository
         #endregion
 
         #region ASYNC
-        public async Task<IEnumerable<Memory>> GetAllMemorysAsync()
+        public async Task<IEnumerable<Memory>> GetAllMemoriesAsync()
         {
-            var memorys = await FindAllAsync();
-            return memorys.OrderBy(x => x.Name);
+            var memories = await FindAllAsync();
+            return memories.OrderBy(x => x.Name);
         }
 
         public async Task<Memory> GetMemoryByIdAsync(int id)
@@ -93,8 +95,8 @@ namespace MTL.DataAccess.Repository
 
             return new MemoryExtended(memory)
             {
-                //TimeLine = await RepositoryContext.TimeLines
-                //    .Where(a => a. == id).ToListAsync()
+                TimeLine = RepositoryContext.TimeLines
+                    .Where(x => x.Id == memory.Id).FirstOrDefault()
             };
         }
 

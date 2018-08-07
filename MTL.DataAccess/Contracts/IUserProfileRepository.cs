@@ -9,7 +9,7 @@ namespace MTL.DataAccess.Contracts
         #region SYNC
         IEnumerable<UserProfile> GetAllUserProfiles();
         UserProfile GetUserProfileById(int id);
-        UserProfile GetUserProfileByIdentityId(int ownerId);
+        UserProfile GetUserProfileByIdentityId(string ownerId);
         UserProfileExtended GetUserProfileWithDetails(int id);
         int CreateUserProfile(UserProfile userProfile);
         void UpdateUserProfile(int id, UserProfile userProfile);
@@ -20,6 +20,7 @@ namespace MTL.DataAccess.Contracts
         Task<IEnumerable<UserProfile>> GetAllUserProfilesAsync();
         Task<UserProfile> GetUserProfileByIdAsync(int id);
         Task<UserProfileExtended> GetUserProfileWithDetailsAsync(int Id);
+        Task<UserProfile> GetUserProfileByIdentityIdAsync(string ownerId);
         Task<int> CreateUserProfileAsync(UserProfile userProfile);
         Task UpdateUserProfileAsync(int id, UserProfile userProfile);
         Task DeleteUserProfileAsync(int id);

@@ -104,12 +104,12 @@ namespace MTL.WebAPI
                     Version = appSettings["Version"],
                     Title = appSettings["AppName"] + " API ",
                     Description = "A simple example ASP.NET Core Web API",
-                    TermsOfService = "None",
+                    TermsOfService = "TOS",
                     Contact = new Contact
                     {
-                        Name = "Shayne Boyer",
-                        Email = string.Empty,
-                        Url = "https://twitter.com/spboyer"
+                        Name = "Brian Fletcher",
+                        Email = "brian.m.fletcher@gmail.com",
+                        Url = appSettings["apiURL"]
                     },
                     License = new License
                     {

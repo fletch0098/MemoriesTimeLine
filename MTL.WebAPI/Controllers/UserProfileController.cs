@@ -4,90 +4,58 @@ using Microsoft.AspNetCore.Mvc;
 using MTL.DataAccess.Contracts;
 using Microsoft.Extensions.Logging;
 using MTL.DataAccess.Entities;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MTL.Library.Common;
 
 namespace MTL.WebAPI.Controllers
 {
     /// <summary>
-    /// TimeLine Controller Manages all things TimeLine
+    /// UserProfile Controller Manages all things UserProfile
     /// </summary>
-    [Route("api/TimeLineTest")]
+    [Route("api/UserProfile")]
     [ApiController]
-    public class TimeLineTestController : ControllerBase
+    public class UserProfileController : ControllerBase
     {
-        private readonly ILogger<TimeLineTestController> _logger;
+        private readonly ILogger<UserProfileController> _logger;
         private IRepositoryWrapper _repository;
         private string _entity;
         private readonly Messages _messages;
 
         /// <summary>
-        /// TimeLine Controller Manages all things TimeLine
+        /// UserProfile Controller Manages all things UserProfile
         /// </summary>
-        public TimeLineTestController(IRepositoryWrapper repository, IOptions<Messages> messages, ILogger<TimeLineTestController> logger)
+        public UserProfileController(IRepositoryWrapper repository, IOptions<Messages> messages, ILogger<UserProfileController> logger)
         {
             _repository = repository;
             _logger = logger;
-            _entity = "TimeLine";
+            _entity = "UserProfile";
             _messages = messages.Value;
 
         }
 
         /// <summary>
-        /// Get all TimeLines
+        /// Get all UserProfiles
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET /TimeLine
+        ///     GET /UserProfile
         ///     {
+        ///     
         ///     }
         ///
         /// </remarks>
-        /// <returns>A list of all TimeLines</returns>
-        /// <response code="200">Returns a list of all TimeLines</response>
-        /// <response code="500">If there is an error</response>            
+        /// <returns>A list of Timelines</returns>
+        /// <response code="200">UserProfiles[]</response>
+        /// <response code="500">Internal server error</response>            
         [HttpGet]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> GetAll()
+        [ProducesResponseType(typeof(UserProfile[]), 200)]
+        [ProducesResponseType(typeof(StatusCodeResult), 500)]
+        public async Task<IActionResult> GetAllUserProfiles()
         {
             try
             {
-                var result = await _repository.TimeLine.GetAllTimeLinesAsync();
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(string.Format(_messages.Controller["SomeError"],ex.Message));
-                return StatusCode(500, string.Format(_messages.Controller["Error500"]));
-            }
-        }
-
-        /// <summary>
-        /// Get all TimeLines
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     GET /TimeLine/owner/1
-        ///     {
-        ///        
-        ///     }
-        ///
-        /// </remarks>
-        /// <returns>A list of all TimeLines for the owner</returns>
-        /// <response code="200">Returns a list of TimeLines</response>
-        /// <response code="500">If there is an error</response>            
-        [HttpGet("owner/{ownerId}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> GetAllByOwner(string ownerId)
-        {
-            try
-            {
-                var result = await _repository.TimeLine.GetTimeLinesByOwnerIdAsync(ownerId);
+                var result = await _repository.UserProfile.GetAllUserProfilesAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -97,37 +65,70 @@ namespace MTL.WebAPI.Controllers
             }
         }
 
+        ///// <summary>
+        ///// Get UserProfile by OwnerId
+        ///// </summary>
+        ///// <remarks>
+        ///// Sample request:
+        /////
+        /////     GET /UserProfile/owner/1
+        /////     {
+        /////        
+        /////     }
+        /////
+        ///// </remarks>
+        ///// <param name = "ownerId" > Owner Id</param>
+        ///// <returns>A list of UserProfiles for the owner</returns>
+        ///// <response code = "200" > UserProfiles[] </ response >
+        ///// < response code= "500" > Internal server error</response>            
+        ////[HttpGet("owner/{ownerId}")]
+        ////[ProducesResponseType(typeof(UserProfile[]), 200)]
+        ////[ProducesResponseType(typeof(StatusCodeResult), 500)]
+        ////public async Task<IActionResult> GetAllByOwnerId(string ownerId)
+        ////{
+        ////    try
+        ////    {
+        ////        var result = await _repository.UserProfile.GetUserProfileByIdentityId(ownerId);
+        ////        return Ok(result);
+        ////    }
+        ////    catch (Exception ex)
+        ////    {
+        ////        _logger.LogError(string.Format(_messages.Controller["SomeError"], ex.Message));
+        ////        return StatusCode(500, string.Format(_messages.Controller["Error500"]));
+        ////    }
+        ////}
+
 
         /// <summary>
-        /// Get a TimeLine by Id
+        /// Get a UserProfile by Id
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /TimeLine/1
+        ///     Get /UserProfile/1
         ///     {
-        ///        "id": 1
+        ///       
         ///     }
         ///
         /// </remarks>
-        /// /// <param name="id">TimeLine Id</param>
-        /// <returns>A TimeLine</returns>
-        /// <response code="200">Returns the TimeLine</response>
-        /// <response code="404">If the TimeLine is not found</response>
-        /// <response code="500">If there is an error</response>       
-        [HttpGet("{id}", Name = "GetTimeLineById")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(200)]
+        /// <param name="id">UserProfile Id</param>
+        /// <returns>A single UserProfile</returns>
+        /// <response code="200">UserProfile</response>
+        /// <response code="404">Object with Id not found</response>
+        /// <response code="500">Internal server error</response>       
+        [HttpGet("{id}", Name = "GetUserProfileById")]
+        [ProducesResponseType(typeof(UserProfile), 200)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
+        [ProducesResponseType(typeof(StatusCodeResult), 500)]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var result = await _repository.TimeLine.GetTimeLineByIdAsync(id);
+                var result = await _repository.UserProfile.GetUserProfileByIdAsync(id);
 
                 if (result.IsEmptyObject())
                 {
-                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity,id));
+                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
                     return NotFound();
                 }
                 else
@@ -144,31 +145,31 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Get a TimeLine with its list of Memories
+        /// Get a UserProfile with its Memories
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /TimeLine/1/Memories
+        ///     Get /UserProfile/1/Memories
         ///     {
-        ///        "id": 1
+        ///        
         ///     }
         ///
         /// </remarks>
-        /// <param name="id">TimeLine Id</param>
-        /// <returns>An extended TimeLine</returns>
-        /// <response code="200">Returns the extended TimeLine</response>
-        /// <response code="404">If the TimeLine is not found</response>
-        /// <response code="500">If there is an error</response>  
+        /// <param name="id">UserProfile Id</param>
+        /// <returns>A single extended UserProfile</returns>
+        /// <response code="200">ExtendedUserProfile</response>
+        /// <response code="404">Object with Id not found</response>
+        /// <response code="500">Internal server error</response>  
         [HttpGet("{id}/memories")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(UserProfileExtended), 204)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
+        [ProducesResponseType(typeof(StatusCodeResult), 500)]
         public async Task<IActionResult> GetWithDetails(int id)
         {
             try
             {
-                var result = await _repository.TimeLine.GetTimeLineWithDetailsAsync(id);
+                var result = await _repository.UserProfile.GetUserProfileWithDetailsAsync(id);
 
                 if (result.IsEmptyObject())
                 {
@@ -189,31 +190,31 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Get a TimeLine with its owner
+        /// Get a UserProfile with its Owner
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /TimeLine/1/Owner
+        ///     Get /UserProfile/1/Owner
         ///     {
-        ///        "id": 1
+        ///       
         ///     }
         ///
         /// </remarks>
-        /// <param name="id">TimeLine Id</param>
-        /// <returns>An extended TimeLine</returns>
-        /// <response code="200">Returns the extended TimeLine</response>
-        /// <response code="404">If the TimeLine is not found</response>
-        /// <response code="500">If there is an error</response>  
+        /// <param name="id">UserProfile Id</param>
+        /// <returns>A single extended UserProfile</returns>
+        /// <response code="200">ExtendedUserProfile</response>
+        /// <response code="404">Object with Id not found</response>
+        /// <response code="500">Internal server error</response>  
         [HttpGet("{id}/owner")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(UserProfileExtended), 204)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
+        [ProducesResponseType(typeof(StatusCodeResult), 500)]
         public async Task<IActionResult> GetWithOwner(int id)
         {
             try
             {
-                var result = await _repository.TimeLine.GetTimeLineWithOwnerAsync(id);
+                var result = await _repository.UserProfile.GetUserProfileWithDetailsAsync(id);
 
                 if (result.IsEmptyObject())
                 {
@@ -234,12 +235,12 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Update a TimeLine
+        /// Update a UserProfile
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     PUT /TimeLine/1
+        ///     PUT /UserProfile
         ///     {
         ///         "name": "string",
         ///         "description": "string",
@@ -250,22 +251,22 @@ namespace MTL.WebAPI.Controllers
         /// 
         ///
         /// </remarks>
-        /// <param name="timeLine">TimeLine</param>
+        /// <param name="userProfile">UserProfile</param>
         /// <returns></returns>
         /// <response code="204">No content</response>
-        /// <response code="400">If the object is not a valid TimeLine</response>
-        /// <response code="404">If the TimeLine is not found</response>
-        /// <response code="500">If there is an error</response> 
+        /// <response code="400">Invalid Object</response>
+        /// <response code="404">Object with Id not found</response>
+        /// <response code="500">Internal server error</response> 
         [HttpPut]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> UpdateTimeLine([FromBody]TimeLine timeLine)
+        [ProducesResponseType(typeof(NoContentResult), 204)]
+        [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
+        [ProducesResponseType(typeof(StatusCodeResult), 500)]
+        public async Task<IActionResult> UpdateUserProfile([FromBody]UserProfile userProfile)
         {
             try
             {
-                if (timeLine.IsObjectNull())
+                if (userProfile.IsObjectNull())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NullObject"], _entity));
                     return BadRequest(string.Format(_messages.Controller["NullObject"], _entity));
@@ -277,15 +278,15 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var dbTimeLine = await _repository.TimeLine.GetTimeLineByIdAsync(timeLine.Id);
-                if (dbTimeLine.IsEmptyObject())
+                var dbUserProfile = await _repository.UserProfile.GetUserProfileByIdAsync(userProfile.Id);
+                if (dbUserProfile.IsEmptyObject())
                 {
-                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, timeLine.Id));
+                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, userProfile.Id));
                     return NotFound();
                 }
 
-                await _repository.TimeLine.UpdateTimeLineAsync(timeLine.Id, timeLine);
-                _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, timeLine.Id));
+                await _repository.UserProfile.UpdateUserProfileAsync(userProfile.Id, userProfile);
+                _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, userProfile.Id));
                 return NoContent();
             }
             catch (Exception ex)
@@ -296,12 +297,12 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Create a TimeLine
+        /// Create a UserProfile
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /TimeLine/1
+        ///     POST /UserProfile/1
         ///     {
         ///         "name": "string",
         ///         "description": "string",
@@ -311,20 +312,20 @@ namespace MTL.WebAPI.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <param name="timeLine">A TimeLine object</param>
+        /// <param name="userProfile">UserProfile</param>
         /// <returns></returns>
-        /// <response code="201">Created at route</response>
-        /// <response code="400">If the object is not a valid TimeLine</response>
-        /// <response code="500">If there is an error</response> 
+        /// <response code="201">Object created at route</response>
+        /// <response code="400">Object Null or Invalid</response>
+        /// <response code="500">Internal server error</response> 
         [HttpPost]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> Post([FromBody]TimeLine timeLine)
+        [ProducesResponseType(typeof(UserProfile), 201)]
+        [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
+        [ProducesResponseType(typeof(StatusCodeResult), 500)]
+        public async Task<IActionResult> Post([FromBody]UserProfile userProfile)
         {
             try
             {
-                if (timeLine.IsObjectNull())
+                if (userProfile.IsObjectNull())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NullObject"], _entity));
                     return BadRequest(string.Format(_messages.Controller["NullObject"], _entity));
@@ -336,9 +337,9 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var testId = await _repository.TimeLine.CreateTimeLineAsync(timeLine);
+                var Id = await _repository.UserProfile.CreateUserProfileAsync(userProfile);
 
-                var ret = CreatedAtRoute("GetTimeLineTest", new { id = testId }, timeLine);
+                var ret = CreatedAtRoute("GetUserProfileById", new { id = Id }, userProfile);
                 _logger.LogError(string.Format(_messages.Controller["InvalidObject"], _entity));
                 return ret;
             }
@@ -350,38 +351,38 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Delete a TimeLine by Id
+        /// Delete a UserProfile by Id
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /TimeLine/1
+        ///     DELETE /UserProfile/1
         ///     {
-        ///        "id": 1
+        ///      
         ///     }
         ///
         /// </remarks>
-        /// /// <param name="id">TimeLine Id</param>
-        /// <returns>A TimeLine</returns>
-        /// <response code="200">Returns the TimeLine</response>
-        /// <response code="404">If the TimeLine is not found</response>
-        /// <response code="500">If there is an error</response>     
+        /// <param name="id">UserProfile Id</param>
+        /// <returns>UserProfile Id</returns>
+        /// <response code="200">Object Result Id</response>
+        /// <response code="404">Object with Id not found</response>
+        /// <response code="500">Internal server error</response>     
         [HttpDelete("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ObjectResult), 200)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
+        [ProducesResponseType(typeof(StatusCodeResult), 500)]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var timeLine = await _repository.TimeLine.GetTimeLineByIdAsync(id);
-                if (timeLine.IsEmptyObject())
+                var userProfile = await _repository.UserProfile.GetUserProfileByIdAsync(id);
+                if (userProfile.IsEmptyObject())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
                     return NotFound();
                 }
 
-                await _repository.TimeLine.DeleteTimeLineAsync(id);
+                await _repository.UserProfile.DeleteUserProfileAsync(id);
                 _logger.LogError(string.Format(_messages.Controller["Deleted"], _entity, id));
                 return new ObjectResult(id);
             }

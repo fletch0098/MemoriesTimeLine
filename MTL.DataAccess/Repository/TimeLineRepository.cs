@@ -15,13 +15,14 @@ namespace MTL.DataAccess.Repository
         private readonly ILogger<RepositoryWrapper> _logger;
         private readonly UserManager<AppUser> _userManager;
 
-        #region SYNC
         public TimeLineRepository(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger, UserManager<AppUser> userManager)
-            : base(repositoryContext, logger)
+        : base(repositoryContext, logger)
         {
             this._userManager = userManager;
         }
 
+
+        #region SYNC
         public IEnumerable<TimeLine> GetAllTimeLines()
         {
             return FindAll()

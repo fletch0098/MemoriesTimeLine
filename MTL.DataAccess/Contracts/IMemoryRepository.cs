@@ -9,7 +9,7 @@ namespace MTL.DataAccess.Contracts
         #region SYNC
         IEnumerable<Memory> GetAllMemories();
         Memory GetMemoryById(int id);
-        Memory GetMemoryByTimeLineId(int ownerId);
+        Memory GetMemoriesByTimeLineId(int ownerId);
         MemoryExtended GetMemoryWithDetails(int id);
         int CreateMemory(Memory memory);
         void UpdateMemory(int id, Memory memory);
@@ -17,7 +17,7 @@ namespace MTL.DataAccess.Contracts
         #endregion
 
         #region ASYNC
-        Task<IEnumerable<Memory>> GetAllMemorysAsync();
+        Task<IEnumerable<Memory>> GetAllMemoriesAsync();
         Task<Memory> GetMemoryByIdAsync(int id);
         Task<MemoryExtended> GetMemoryWithDetailsAsync(int Id);
         Task<int> CreateMemoryAsync(Memory memory);

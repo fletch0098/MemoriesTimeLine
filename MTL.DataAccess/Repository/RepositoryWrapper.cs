@@ -58,7 +58,7 @@ namespace MTL.DataAccess.Repository
             {
                 if (_userProfile == null)
                 {
-                    _userProfile = new UserProfileRepository(_repoContext, _logger);
+                    _userProfile = new UserProfileRepository(_repoContext, _logger, _userManager);
                 }
 
                 return _userProfile;
