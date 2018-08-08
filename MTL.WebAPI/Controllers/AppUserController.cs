@@ -10,52 +10,52 @@ using MTL.Library.Common;
 namespace MTL.WebAPI.Controllers
 {
     /// <summary>
-    /// UserProfile Controller Manages all things UserProfile
+    /// AppUser Controller Manages all things AppUser
     /// </summary>
-    [Route("api/UserProfile")]
+    [Route("api/AppUser")]
     [ApiController]
-    public class UserProfileController : ControllerBase
+    public class AppUserController : ControllerBase
     {
-        private readonly ILogger<UserProfileController> _logger;
+        private readonly ILogger<AppUserController> _logger;
         private IRepositoryWrapper _repository;
         private string _entity;
         private readonly Messages _messages;
 
         /// <summary>
-        /// UserProfile Controller Manages all things UserProfile
+        /// AppUser Controller Manages all things AppUser
         /// </summary>
-        public UserProfileController(IRepositoryWrapper repository, IOptions<Messages> messages, ILogger<UserProfileController> logger)
+        public AppUserController(IRepositoryWrapper repository, IOptions<Messages> messages, ILogger<AppUserController> logger)
         {
             _repository = repository;
             _logger = logger;
-            _entity = "UserProfile";
+            _entity = "AppUser";
             _messages = messages.Value;
 
         }
 
         /// <summary>
-        /// Get all UserProfiles
+        /// Get all AppUsers
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET /UserProfile
+        ///     GET /AppUser
         ///     {
         ///     
         ///     }
         ///
         /// </remarks>
-        /// <returns>A list of UserProfiles</returns>
-        /// <response code="200">UserProfiles[]</response>
+        /// <returns>A list of AppUsers</returns>
+        /// <response code="200">AppUser[]</response>
         /// <response code="500">Internal server error</response>            
         [HttpGet]
-        [ProducesResponseType(typeof(UserProfile[]), 200)]
+        [ProducesResponseType(typeof(AppUser[]), 200)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> GetAllUserProfiles()
+        public async Task<IActionResult> GetAllAppUsers()
         {
             try
             {
-                var result = await _repository.UserProfiles.GetAllUserProfilesAsync();
+                var result = await _repository.AppUsers.GetAllAppUsersAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -66,29 +66,29 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Get UserProfile by AppUserId
+        /// Get AppUser by IdentityId
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET /UserProfile/AppUser/1
+        ///     GET /AppUser/Identity/1
         ///     {
         ///        
         ///     }
         ///
         /// </remarks>
-        /// <param name = "appUserId" > AppUser Id</param>
-        /// <returns>A list of UserProfiles</returns>
-        /// <response code = "200" > UserProfiles[] </response >
-        /// <response code= "500" > Internal server error</response>            
-        [HttpGet("appUser/{appUserId}")]
-        [ProducesResponseType(typeof(UserProfile[]), 200)]
+        /// <param name="identityId">Identity Id</param>
+        /// <returns>A list of AppUsers for the owner</returns>
+        /// <response code="200">AppUsers[]</response>
+        /// <response code="500">Internal server error</response>            
+        [HttpGet("identity/{identityId}")]
+        [ProducesResponseType(typeof(AppUser[]), 200)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> GetAllByappUserId(int appUserId)
+        public async Task<IActionResult> GetByIdentityId(string identityId)
         {
             try
             {
-                var result = await _repository.UserProfiles.GetUserProfileByAppUserIdAsync(appUserId);
+                var result = await _repository.AppUsers.GetAppUsersByIdentityIdAsync(identityId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -100,31 +100,31 @@ namespace MTL.WebAPI.Controllers
 
 
         /// <summary>
-        /// Get a UserProfile by Id
+        /// Get a AppUser by Id
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /UserProfile/1
+        ///     Get /AppUser/1
         ///     {
         ///       
         ///     }
         ///
         /// </remarks>
-        /// <param name="id">UserProfile Id</param>
-        /// <returns>A single UserProfile</returns>
-        /// <response code="200">UserProfile</response>
+        /// <param name="id">AppUser Id</param>
+        /// <returns>A single AppUser</returns>
+        /// <response code="200">AppUser</response>
         /// <response code="404">Object with Id not found</response>
         /// <response code="500">Internal server error</response>       
-        [HttpGet("{id}", Name = "GetUserProfileById")]
-        [ProducesResponseType(typeof(UserProfile), 200)]
+        [HttpGet("{id}", Name = "GetAppUserById")]
+        [ProducesResponseType(typeof(AppUser), 200)]
         [ProducesResponseType(typeof(NotFoundResult), 404)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var result = await _repository.UserProfiles.GetUserProfileByIdAsync(id);
+                var result = await _repository.AppUsers.GetAppUserByIdAsync(id);
 
                 if (result.IsEmptyObject())
                 {
@@ -145,31 +145,33 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Get a UserProfile with AppUser
+        /// Get a Extended AppUser with Details
+        /// Identity User
+        /// UserProfile
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /UserProfile/1/AppUser
+        ///     Get /AppUser/1/Details
         ///     {
         ///        
         ///     }
         ///
         /// </remarks>
-        /// <param name="id">UserProfile Id</param>
-        /// <returns>A single extended UserProfile</returns>
-        /// <response code="200">ExtendedUserProfile</response>
+        /// <param name="id">AppUser Id</param>
+        /// <returns>A single extended AppUser</returns>
+        /// <response code="200">ExtendedAppUser</response>
         /// <response code="404">Object with Id not found</response>
         /// <response code="500">Internal server error</response>  
-        [HttpGet("{id}/appUser")]
-        [ProducesResponseType(typeof(UserProfileExtended), 204)]
+        [HttpGet("{id}/details")]
+        [ProducesResponseType(typeof(AppUserExtended), 204)]
         [ProducesResponseType(typeof(NotFoundResult), 404)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
         public async Task<IActionResult> GetWithDetails(int id)
         {
             try
             {
-                var result = await _repository.UserProfiles.GetUserProfileWithDetailsAsync(id);
+                var result = await _repository.AppUsers.GetAppUserWithDetailsAsync(id);
 
                 if (result.IsEmptyObject())
                 {
@@ -190,25 +192,23 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Update a UserProfile
+        /// Update an AppUser
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     PUT /UserProfile
+        ///     PUT /AppUser
         ///     {
-        ///         "appUserId": 0,
-        ///         "location": "string",
-        ///         "locale": "string",
-        ///         "gender": "string",
-        ///         "facebookId": 0,
-        ///         "pictureUrl": "string",
+        ///         "name": "string",
+        ///         "description": "string",
+        ///         "ownerId": "string",
         ///         "id": 0,
+        ///         "lastModified": "2018-08-07T01:39:19.706Z"
         ///     }
         /// 
         ///
         /// </remarks>
-        /// <param name="userProfile">UserProfile</param>
+        /// <param name="appUser">AppUser</param>
         /// <returns></returns>
         /// <response code="204">No content</response>
         /// <response code="400">Invalid Object</response>
@@ -219,11 +219,11 @@ namespace MTL.WebAPI.Controllers
         [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
         [ProducesResponseType(typeof(NotFoundResult), 404)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> UpdateUserProfile([FromBody]UserProfile userProfile)
+        public async Task<IActionResult> UpdateAppUser([FromBody]AppUser appUser)
         {
             try
             {
-                if (userProfile.IsObjectNull())
+                if (appUser.IsObjectNull())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NullObject"], _entity));
                     return BadRequest(string.Format(_messages.Controller["NullObject"], _entity));
@@ -235,15 +235,15 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var dbUserProfile = await _repository.UserProfiles.GetUserProfileByIdAsync(userProfile.Id);
-                if (dbUserProfile.IsEmptyObject())
+                var dbAppUser = await _repository.AppUsers.GetAppUserByIdAsync(appUser.Id);
+                if (dbAppUser.IsEmptyObject())
                 {
-                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, userProfile.Id));
+                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, appUser.Id));
                     return NotFound();
                 }
 
-                await _repository.UserProfiles.UpdateUserProfileAsync(userProfile.Id, userProfile);
-                _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, userProfile.Id));
+                await _repository.AppUsers.UpdateAppUserAsync(appUser.Id, appUser);
+                _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, appUser.Id));
                 return NoContent();
             }
             catch (Exception ex)
@@ -254,36 +254,35 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Create a UserProfile
+        /// Create a AppUser
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /UserProfile/1
+        ///     POST /AppUser/1
         ///     {
-        ///         "appUserId": 0,
-        ///         "location": "string",
-        ///         "locale": "string",
-        ///         "gender": "string",
-        ///         "facebookId": 0,
-        ///         "pictureUrl": "string",
+        ///         "name": "string",
+        ///         "description": "string",
+        ///         "ownerId": "string",
+        ///         "id": 0,
+        ///         "lastModified": "2018-08-07T01:39:19.706Z"
         ///     }
         ///
         /// </remarks>
-        /// <param name="userProfile">UserProfile</param>
+        /// <param name="appUser">AppUser</param>
         /// <returns></returns>
         /// <response code="201">Object created at route</response>
         /// <response code="400">Object Null or Invalid</response>
         /// <response code="500">Internal server error</response> 
         [HttpPost]
-        [ProducesResponseType(typeof(UserProfile), 201)]
+        [ProducesResponseType(typeof(AppUser), 201)]
         [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> Post([FromBody]UserProfile userProfile)
+        public async Task<IActionResult> Post([FromBody]AppUser appUser)
         {
             try
             {
-                if (userProfile.IsObjectNull())
+                if (appUser.IsObjectNull())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NullObject"], _entity));
                     return BadRequest(string.Format(_messages.Controller["NullObject"], _entity));
@@ -295,9 +294,9 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var Id = await _repository.UserProfiles.CreateUserProfileAsync(userProfile);
+                var Id = await _repository.AppUsers.CreateAppUserAsync(appUser);
 
-                var ret = CreatedAtRoute("GetUserProfileById", new { id = Id }, userProfile);
+                var ret = CreatedAtRoute("GetAppUserById", new { id = Id }, appUser);
                 _logger.LogError(string.Format(_messages.Controller["InvalidObject"], _entity));
                 return ret;
             }
@@ -309,19 +308,19 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Delete a UserProfile by Id
+        /// Delete a AppUser by Id
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /UserProfile/1
+        ///     DELETE /AppUser/1
         ///     {
         ///      
         ///     }
         ///
         /// </remarks>
-        /// <param name="id">UserProfile Id</param>
-        /// <returns>UserProfile Id</returns>
+        /// <param name="id">AppUser Id</param>
+        /// <returns>AppUser Id</returns>
         /// <response code="200">Object Result Id</response>
         /// <response code="404">Object with Id not found</response>
         /// <response code="500">Internal server error</response>     
@@ -333,14 +332,14 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var userProfile = await _repository.UserProfiles.GetUserProfileByIdAsync(id);
-                if (userProfile.IsEmptyObject())
+                var appUser = await _repository.AppUsers.GetAppUserByIdAsync(id);
+                if (appUser.IsEmptyObject())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
                     return NotFound();
                 }
 
-                await _repository.UserProfiles.DeleteUserProfileAsync(id);
+                await _repository.AppUsers.DeleteAppUserAsync(id);
                 _logger.LogError(string.Format(_messages.Controller["Deleted"], _entity, id));
                 return new ObjectResult(id);
             }

@@ -9,15 +9,17 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace MTL.DataAccess.Repository
 {
     public class UserProfileRepository : RepositoryBase<UserProfile>, IUserProfileRepository
     {
         private readonly ILogger<RepositoryWrapper> _logger;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public UserProfileRepository(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger, UserManager<AppUser> userManager)
+        public UserProfileRepository(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger, UserManager<IdentityUser> userManager)
             : base(repositoryContext, logger)
         {
             this._logger = logger;
@@ -38,9 +40,9 @@ namespace MTL.DataAccess.Repository
                 .FirstOrDefault();
         }
 
-        public UserProfile GetUserProfileByIdentityId(string identityId)
+        public UserProfile GetUserProfileByAppUserId(int appUserId)
         {
-            return FindByCondition(x => x.IdentityId.Equals(identityId))
+            return FindByCondition(x => x.AppUserId.Equals(appUserId))
                 .DefaultIfEmpty(new UserProfile())
                 .FirstOrDefault();
         }
@@ -50,9 +52,8 @@ namespace MTL.DataAccess.Repository
             var userProfile = GetUserProfileById(id);
             return new UserProfileExtended(userProfile)
             {
-                Owner = _userManager.Users
-                .Where(x => x.Id == userProfile.IdentityId)
-                .FirstOrDefault()
+               AppUser = RepositoryContext.AppUsers
+                    .Where(a => a.Id == userProfile.AppUserId).FirstOrDefault()
             };
         }
 
@@ -100,13 +101,14 @@ namespace MTL.DataAccess.Repository
 
             return new UserProfileExtended(userProfile)
             {
-                Owner = await _userManager.FindByIdAsync(userProfile.IdentityId)
+                AppUser = await RepositoryContext.AppUsers
+                    .Where(a => a.Id == userProfile.AppUserId).FirstOrDefaultAsync()
             };
         }
 
-        public async Task<UserProfile> GetUserProfileByIdentityIdAsync(string identityId)
+        public async Task<UserProfile> GetUserProfileByAppUserIdAsync(int appUserId)
         {
-            var userProfile = await FindByConditionAync(x => x.IdentityId.Equals(identityId));
+            var userProfile = await FindByConditionAync(x => x.AppUserId.Equals(appUserId));
             return userProfile.FirstOrDefault();
         }
 

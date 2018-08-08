@@ -55,7 +55,7 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var result = await _repository.Memory.GetAllMemoriesAsync();
+                var result = await _repository.Memories.GetAllMemoriesAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -65,38 +65,38 @@ namespace MTL.WebAPI.Controllers
             }
         }
 
-        ///// <summary>
-        ///// Get all Memories by OwnerId
-        ///// </summary>
-        ///// <remarks>
-        ///// Sample request:
-        /////
-        /////     GET /Memory/owner/1
-        /////     {
-        /////        
-        /////     }
-        /////
-        ///// </remarks>
-        ///// <param name="ownerId">Owner Id</param>
-        ///// <returns>A list of Memories for the owner</returns>
-        ///// <response code="200">Memories[]</response>
-        ///// <response code="500">Internal server error</response>            
-        //[HttpGet("owner/{ownerId}")]
-        //[ProducesResponseType(typeof(Memory[]), 200)]
-        //[ProducesResponseType(typeof(StatusCodeResult), 500)]
-        //public async Task<IActionResult> GetAllByOwnerId(string ownerId)
-        //{
-        //    try
-        //    {
-        //        var result = await _repository.Memory.GetMemoriesByOwnerIdAsync(ownerId);
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(string.Format(_messages.Controller["SomeError"], ex.Message));
-        //        return StatusCode(500, string.Format(_messages.Controller["Error500"]));
-        //    }
-        //}
+        /// <summary>
+        /// Get all Memories for a TimeLine
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /Memory/TimeLine/1
+        ///     {
+        ///        
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="timeLineId">TimeLine Id</param>
+        /// <returns>A list of Memories</returns>
+        /// <response code="200">Memories[]</response>
+        /// <response code="500">Internal server error</response>            
+        [HttpGet("timeLine/{timeLineId}")]
+        [ProducesResponseType(typeof(Memory[]), 200)]
+        [ProducesResponseType(typeof(StatusCodeResult), 500)]
+        public async Task<IActionResult> GetAllByOwnerId(int timeLineId)
+        {
+            try
+            {
+                var result = await _repository.Memories.GetMemoriesByTimeLineIdAsync(timeLineId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(string.Format(_messages.Controller["SomeError"], ex.Message));
+                return StatusCode(500, string.Format(_messages.Controller["Error500"]));
+            }
+        }
 
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var result = await _repository.Memory.GetMemoryByIdAsync(id);
+                var result = await _repository.Memories.GetMemoryByIdAsync(id);
 
                 if (result.IsEmptyObject())
                 {
@@ -169,7 +169,7 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var result = await _repository.Memory.GetMemoryWithDetailsAsync(id);
+                var result = await _repository.Memories.GetMemoryWithDetailsAsync(id);
 
                 if (result.IsEmptyObject())
                 {
@@ -189,51 +189,6 @@ namespace MTL.WebAPI.Controllers
             }
         }
 
-        ///// <summary>
-        ///// Get a Memory with its Owner
-        ///// </summary>
-        ///// <remarks>
-        ///// Sample request:
-        /////
-        /////     Get /Memory/1/Owner
-        /////     {
-        /////       
-        /////     }
-        /////
-        ///// </remarks>
-        ///// <param name="id">Memory Id</param>
-        ///// <returns>A single extended Memory</returns>
-        ///// <response code="200">ExtendedMemory</response>
-        ///// <response code="404">Object with Id not found</response>
-        ///// <response code="500">Internal server error</response>  
-        //[HttpGet("{id}/owner")]
-        //[ProducesResponseType(typeof(MemoryExtended), 204)]
-        //[ProducesResponseType(typeof(NotFoundResult), 404)]
-        //[ProducesResponseType(typeof(StatusCodeResult), 500)]
-        //public async Task<IActionResult> GetWithOwner(int id)
-        //{
-        //    try
-        //    {
-        //        var result = await _repository.Memory.GetMemoryWithOwnerAsync(id);
-
-        //        if (result.IsEmptyObject())
-        //        {
-        //            _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            _logger.LogError(string.Format(_messages.Controller["ReturnedDetails"], _entity, id));
-        //            return Ok(result);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(string.Format(_messages.Controller["SomeError"], ex.Message));
-        //        return StatusCode(500, string.Format(_messages.Controller["Error500"]));
-        //    }
-        //}
-
         /// <summary>
         /// Update a Memory
         /// </summary>
@@ -244,9 +199,9 @@ namespace MTL.WebAPI.Controllers
         ///     {
         ///         "name": "string",
         ///         "description": "string",
-        ///         "ownerId": "string",
+        ///         "timeLineId": 0,
+        ///         "Date": ""
         ///         "id": 0,
-        ///         "lastModified": "2018-08-07T01:39:19.706Z"
         ///     }
         /// 
         ///
@@ -278,14 +233,14 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var dbMemory = await _repository.Memory.GetMemoryByIdAsync(memory.Id);
+                var dbMemory = await _repository.Memories.GetMemoryByIdAsync(memory.Id);
                 if (dbMemory.IsEmptyObject())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, memory.Id));
                     return NotFound();
                 }
 
-                await _repository.Memory.UpdateMemoryAsync(memory.Id, memory);
+                await _repository.Memories.UpdateMemoryAsync(memory.Id, memory);
                 _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, memory.Id));
                 return NoContent();
             }
@@ -306,9 +261,8 @@ namespace MTL.WebAPI.Controllers
         ///     {
         ///         "name": "string",
         ///         "description": "string",
-        ///         "ownerId": "string",
-        ///         "id": 0,
-        ///         "lastModified": "2018-08-07T01:39:19.706Z"
+        ///         "date": "string",
+        ///         "timeLineId": 0
         ///     }
         ///
         /// </remarks>
@@ -337,7 +291,7 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var Id = await _repository.Memory.CreateMemoryAsync(memory);
+                var Id = await _repository.Memories.CreateMemoryAsync(memory);
 
                 var ret = CreatedAtRoute("GetMemoryById", new { id = Id }, memory);
                 _logger.LogError(string.Format(_messages.Controller["InvalidObject"], _entity));
@@ -375,14 +329,14 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var memory = await _repository.Memory.GetMemoryByIdAsync(id);
+                var memory = await _repository.Memories.GetMemoryByIdAsync(id);
                 if (memory.IsEmptyObject())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
                     return NotFound();
                 }
 
-                await _repository.Memory.DeleteMemoryAsync(id);
+                await _repository.Memories.DeleteMemoryAsync(id);
                 _logger.LogError(string.Format(_messages.Controller["Deleted"], _entity, id));
                 return new ObjectResult(id);
             }

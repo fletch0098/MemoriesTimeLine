@@ -3,15 +3,17 @@ using MTL.DataAccess.Contracts;
 using MTL.DataAccess.Entities;
 using MTL.DataAccess.Entities.Extensions;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace MTL.DataAccess.Repository
 {
     public class MemoryRepository : RepositoryBase<Memory>, IMemoryRepository
     {
-        private readonly ILogger<RepositoryWrapper> _logger;
+        //private readonly ILogger<RepositoryWrapper> _logger;
 
         public MemoryRepository(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger)
             : base(repositoryContext, logger)
@@ -33,11 +35,10 @@ namespace MTL.DataAccess.Repository
                 .FirstOrDefault();
         }
 
-        public Memory GetMemoriesByTimeLineId(int timeLineId)
+        public IEnumerable<Memory> GetMemoriesByTimeLineId(int timeLineId)
         {
             return FindByCondition(m => m.TimeLineId.Equals(timeLineId))
-                .DefaultIfEmpty(new Memory())
-                .FirstOrDefault();
+                .ToList();
         }
 
         public MemoryExtended GetMemoryWithDetails(int id)
@@ -87,6 +88,12 @@ namespace MTL.DataAccess.Repository
             var memory = await FindByConditionAync(o => o.Id.Equals(id));
             return memory.DefaultIfEmpty(new Memory())
                     .FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<Memory>> GetMemoriesByTimeLineIdAsync(int timeLineId)
+        {
+            var memories = await FindByConditionAync(o => o.TimeLineId.Equals(timeLineId));
+            return memories;
         }
 
         public async Task<MemoryExtended> GetMemoryWithDetailsAsync(int id)

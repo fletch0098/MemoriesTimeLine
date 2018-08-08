@@ -6,9 +6,10 @@ namespace MTL.DataAccess.Contracts
 {
     public interface IRepositoryWrapper
     {
-        ITimeLineRepository TimeLine { get; }
-        IMemoryRepository Memory { get; }
-        IUserProfileRepository UserProfile { get; }
-        IAppUserRepository AppUser { get; }
+        ITimeLineRepository TimeLines { get; }
+        IMemoryRepository Memories { get; }
+        IUserProfileRepository UserProfiles { get; }
+        IIdentityUserRepository IdentityUsers { get; }
+        IAppUserRepository AppUsers { get; }
     }
 }

@@ -55,7 +55,7 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var result = await _repository.TimeLine.GetAllTimeLinesAsync();
+                var result = await _repository.TimeLines.GetAllTimeLinesAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -66,29 +66,29 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Get all TimeLines by OwnerId
+        /// Get all TimeLines by AppUserId
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET /TimeLine/owner/1
+        ///     GET /TimeLine/AppUSer/1
         ///     {
         ///        
         ///     }
         ///
         /// </remarks>
-        /// <param name="ownerId">Owner Id</param>
-        /// <returns>A list of TimeLines for the owner</returns>
+        /// <param name="appUserId">AppUser Id</param>
+        /// <returns>A list of TimeLines</returns>
         /// <response code="200">TimeLines[]</response>
         /// <response code="500">Internal server error</response>            
-        [HttpGet("owner/{ownerId}")]
+        [HttpGet("appuser/{appUserId}")]
         [ProducesResponseType(typeof(TimeLine[]), 200)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> GetAllByOwnerId(string ownerId)
+        public async Task<IActionResult> GetAllByAppUSerId(int appUserId)
         {
             try
             {
-                var result = await _repository.TimeLine.GetTimeLinesByOwnerIdAsync(ownerId);
+                var result = await _repository.TimeLines.GetTimeLinesByAppUserIdAsync(appUserId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -124,7 +124,7 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var result = await _repository.TimeLine.GetTimeLineByIdAsync(id);
+                var result = await _repository.TimeLines.GetTimeLineByIdAsync(id);
 
                 if (result.IsEmptyObject())
                 {
@@ -145,12 +145,12 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Get a TimeLine with its Memories
+        /// Get a TimeLine with all it´s details
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /TimeLine/1/Memories
+        ///     Get /TimeLine/1/Details
         ///     {
         ///        
         ///     }
@@ -161,7 +161,7 @@ namespace MTL.WebAPI.Controllers
         /// <response code="200">ExtendedTimeLine</response>
         /// <response code="404">Object with Id not found</response>
         /// <response code="500">Internal server error</response>  
-        [HttpGet("{id}/memories")]
+        [HttpGet("{id}/details")]
         [ProducesResponseType(typeof(TimeLineExtended), 204)]
         [ProducesResponseType(typeof(NotFoundResult), 404)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
@@ -169,52 +169,7 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var result = await _repository.TimeLine.GetTimeLineWithDetailsAsync(id);
-
-                if (result.IsEmptyObject())
-                {
-                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
-                    return NotFound();
-                }
-                else
-                {
-                    _logger.LogError(string.Format(_messages.Controller["ReturnedDetails"], _entity, id));
-                    return Ok(result);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(string.Format(_messages.Controller["SomeError"], ex.Message));
-                return StatusCode(500, string.Format(_messages.Controller["Error500"]));
-            }
-        }
-
-        /// <summary>
-        /// Get a TimeLine with its Owner
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     Get /TimeLine/1/Owner
-        ///     {
-        ///       
-        ///     }
-        ///
-        /// </remarks>
-        /// <param name="id">TimeLine Id</param>
-        /// <returns>A single extended TimeLine</returns>
-        /// <response code="200">ExtendedTimeLine</response>
-        /// <response code="404">Object with Id not found</response>
-        /// <response code="500">Internal server error</response>  
-        [HttpGet("{id}/owner")]
-        [ProducesResponseType(typeof(TimeLineExtended), 204)]
-        [ProducesResponseType(typeof(NotFoundResult), 404)]
-        [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> GetWithOwner(int id)
-        {
-            try
-            {
-                var result = await _repository.TimeLine.GetTimeLineWithOwnerAsync(id);
+                var result = await _repository.TimeLines.GetTimeLineWithDetailsAsync(id);
 
                 if (result.IsEmptyObject())
                 {
@@ -244,9 +199,8 @@ namespace MTL.WebAPI.Controllers
         ///     {
         ///         "name": "string",
         ///         "description": "string",
-        ///         "ownerId": "string",
+        ///         "appUserId": 0,
         ///         "id": 0,
-        ///         "lastModified": "2018-08-07T01:39:19.706Z"
         ///     }
         /// 
         ///
@@ -278,14 +232,14 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var dbTimeLine = await _repository.TimeLine.GetTimeLineByIdAsync(timeLine.Id);
+                var dbTimeLine = await _repository.TimeLines.GetTimeLineByIdAsync(timeLine.Id);
                 if (dbTimeLine.IsEmptyObject())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, timeLine.Id));
                     return NotFound();
                 }
 
-                await _repository.TimeLine.UpdateTimeLineAsync(timeLine.Id, timeLine);
+                await _repository.TimeLines.UpdateTimeLineAsync(timeLine.Id, timeLine);
                 _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, timeLine.Id));
                 return NoContent();
             }
@@ -306,9 +260,7 @@ namespace MTL.WebAPI.Controllers
         ///     {
         ///         "name": "string",
         ///         "description": "string",
-        ///         "ownerId": "string",
-        ///         "id": 0,
-        ///         "lastModified": "2018-08-07T01:39:19.706Z"
+        ///         "appUserId": 0,
         ///     }
         ///
         /// </remarks>
@@ -337,7 +289,7 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var Id = await _repository.TimeLine.CreateTimeLineAsync(timeLine);
+                var Id = await _repository.TimeLines.CreateTimeLineAsync(timeLine);
 
                 var ret = CreatedAtRoute("GetTimeLineById", new { id = Id }, timeLine);
                 _logger.LogError(string.Format(_messages.Controller["InvalidObject"], _entity));
@@ -375,14 +327,14 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var timeLine = await _repository.TimeLine.GetTimeLineByIdAsync(id);
+                var timeLine = await _repository.TimeLines.GetTimeLineByIdAsync(id);
                 if (timeLine.IsEmptyObject())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
                     return NotFound();
                 }
 
-                await _repository.TimeLine.DeleteTimeLineAsync(id);
+                await _repository.TimeLines.DeleteTimeLineAsync(id);
                 _logger.LogError(string.Format(_messages.Controller["Deleted"], _entity, id));
                 return new ObjectResult(id);
             }

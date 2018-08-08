@@ -8,25 +8,32 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MTL.DataAccess.Repository
 {
+    /// <summary>
+    /// Repository for all Objects in Application
+    /// </summary>
     public class RepositoryWrapper : IRepositoryWrapper
     {
         private RepositoryContext _repoContext;
         private readonly ILogger<RepositoryWrapper> _logger;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         private ITimeLineRepository _timeLine;
         private IMemoryRepository _memory;
-        private IUserProfileRepository _userProfile;
         private IAppUserRepository _appUser;
+        private IUserProfileRepository _userProfile;
+        private IIdentityUserRepository _identityUser;
 
-        public RepositoryWrapper(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger, UserManager<AppUser> userManager)
+        public RepositoryWrapper(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger, UserManager<IdentityUser> userManager)
         {
             _repoContext = repositoryContext;
             _logger = logger;
             _userManager = userManager;
         }
 
-        public ITimeLineRepository TimeLine
+        /// <summary>
+        /// TimeLine Objects
+        /// </summary>
+        public ITimeLineRepository TimeLines
         {
             get
             {
@@ -39,7 +46,26 @@ namespace MTL.DataAccess.Repository
             }
         }
 
-        public IMemoryRepository Memory
+        /// <summary>
+        /// AppUsers
+        /// </summary>
+        public IAppUserRepository AppUsers
+        {
+            get
+            {
+                if (_appUser == null)
+                {
+                    _appUser = new AppUserRepository(_repoContext, _logger, _userManager);
+                }
+
+                return _appUser;
+            }
+        }
+
+        /// <summary>
+        /// Memory
+        /// </summary>
+        public IMemoryRepository Memories
         {
             get
             {
@@ -52,7 +78,10 @@ namespace MTL.DataAccess.Repository
             }
         }
 
-        public IUserProfileRepository UserProfile
+        /// <summary>
+        /// UserProfile
+        /// </summary>
+        public IUserProfileRepository UserProfiles
         {
             get
             {
@@ -65,16 +94,19 @@ namespace MTL.DataAccess.Repository
             }
         }
 
-        public IAppUserRepository AppUser
+        /// <summary>
+        /// ASP Identity Users
+        /// </summary>
+        public IIdentityUserRepository IdentityUsers
         {
             get
             {
-                if (_appUser == null)
+                if (_identityUser == null)
                 {
-                    _appUser = new AppUserRepository(_repoContext, _userManager, _logger);
+                    _identityUser = new IdentityUserRepository(_repoContext, _userManager, _logger);
                 }
 
-                return _appUser;
+                return _identityUser;
             }
         }
 

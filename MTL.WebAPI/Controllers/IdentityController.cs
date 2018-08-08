@@ -6,127 +6,67 @@ using Microsoft.Extensions.Logging;
 using MTL.DataAccess.Entities;
 using Microsoft.Extensions.Options;
 using MTL.Library.Common;
+using AutoMapper;
+using MTL.Library.Helpers;
+using MTL.WebAPI.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace MTL.WebAPI.Controllers
 {
     /// <summary>
-    /// UserProfile Controller Manages all things UserProfile
+    /// Identity controller manages all things Identity
     /// </summary>
-    [Route("api/UserProfile")]
+    [Route("api/Identity")]
     [ApiController]
-    public class UserProfileController : ControllerBase
+    public class IdentityController : ControllerBase
     {
-        private readonly ILogger<UserProfileController> _logger;
+        private readonly ILogger<IdentityController> _logger;
         private IRepositoryWrapper _repository;
         private string _entity;
         private readonly Messages _messages;
+        private readonly IMapper _mapper;
 
         /// <summary>
-        /// UserProfile Controller Manages all things UserProfile
+        /// Identity controller manages all things Identity
         /// </summary>
-        public UserProfileController(IRepositoryWrapper repository, IOptions<Messages> messages, ILogger<UserProfileController> logger)
+        public IdentityController(IRepositoryWrapper repository, IOptions<Messages> messages, ILogger<IdentityController> logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
-            _entity = "UserProfile";
+            _entity = "Identity";
             _messages = messages.Value;
+            _mapper = mapper;
 
         }
 
         /// <summary>
-        /// Get all UserProfiles
+        /// Get an Identity by Id
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET /UserProfile
-        ///     {
-        ///     
-        ///     }
-        ///
-        /// </remarks>
-        /// <returns>A list of UserProfiles</returns>
-        /// <response code="200">UserProfiles[]</response>
-        /// <response code="500">Internal server error</response>            
-        [HttpGet]
-        [ProducesResponseType(typeof(UserProfile[]), 200)]
-        [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> GetAllUserProfiles()
-        {
-            try
-            {
-                var result = await _repository.UserProfiles.GetAllUserProfilesAsync();
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(string.Format(_messages.Controller["SomeError"], ex.Message));
-                return StatusCode(500, string.Format(_messages.Controller["Error500"]));
-            }
-        }
-
-        /// <summary>
-        /// Get UserProfile by AppUserId
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     GET /UserProfile/AppUser/1
-        ///     {
-        ///        
-        ///     }
-        ///
-        /// </remarks>
-        /// <param name = "appUserId" > AppUser Id</param>
-        /// <returns>A list of UserProfiles</returns>
-        /// <response code = "200" > UserProfiles[] </response >
-        /// <response code= "500" > Internal server error</response>            
-        [HttpGet("appUser/{appUserId}")]
-        [ProducesResponseType(typeof(UserProfile[]), 200)]
-        [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> GetAllByappUserId(int appUserId)
-        {
-            try
-            {
-                var result = await _repository.UserProfiles.GetUserProfileByAppUserIdAsync(appUserId);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(string.Format(_messages.Controller["SomeError"], ex.Message));
-                return StatusCode(500, string.Format(_messages.Controller["Error500"]));
-            }
-        }
-
-
-        /// <summary>
-        /// Get a UserProfile by Id
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     Get /UserProfile/1
+        ///     Get /Identity/1fsdf-sadf-asdf-asd
         ///     {
         ///       
         ///     }
         ///
         /// </remarks>
-        /// <param name="id">UserProfile Id</param>
-        /// <returns>A single UserProfile</returns>
-        /// <response code="200">UserProfile</response>
+        /// <param name="id">Identity Id</param>
+        /// <returns>A single Identity</returns>
+        /// <response code="200">IdentityObject</response>
         /// <response code="404">Object with Id not found</response>
         /// <response code="500">Internal server error</response>       
-        [HttpGet("{id}", Name = "GetUserProfileById")]
-        [ProducesResponseType(typeof(UserProfile), 200)]
+        [HttpGet("{id}", Name = "GetIdentityById")]
+        [ProducesResponseType(typeof(IdentityUser), 200)]
         [ProducesResponseType(typeof(NotFoundResult), 404)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(string id)
         {
             try
             {
-                var result = await _repository.UserProfiles.GetUserProfileByIdAsync(id);
+                var result = await _repository.IdentityUsers.FindByIdAsync(id);
 
-                if (result.IsEmptyObject())
+                if (result == null)
                 {
                     _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
                     return NotFound();
@@ -145,42 +85,29 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Get a UserProfile with AppUser
+        /// Get all Identities
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /UserProfile/1/AppUser
+        ///     GET /Identity
         ///     {
-        ///        
+        ///     
         ///     }
         ///
         /// </remarks>
-        /// <param name="id">UserProfile Id</param>
-        /// <returns>A single extended UserProfile</returns>
-        /// <response code="200">ExtendedUserProfile</response>
-        /// <response code="404">Object with Id not found</response>
-        /// <response code="500">Internal server error</response>  
-        [HttpGet("{id}/appUser")]
-        [ProducesResponseType(typeof(UserProfileExtended), 204)]
-        [ProducesResponseType(typeof(NotFoundResult), 404)]
+        /// <returns>A list of IdentityUsers</returns>
+        /// <response code="200">IdentityUser[]</response>
+        /// <response code="500">Internal server error</response>            
+        [HttpGet]
+        [ProducesResponseType(typeof(IdentityUser[]), 200)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> GetWithDetails(int id)
+        public  IActionResult GetAllIdentityUsers()
         {
             try
             {
-                var result = await _repository.UserProfiles.GetUserProfileWithDetailsAsync(id);
-
-                if (result.IsEmptyObject())
-                {
-                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
-                    return NotFound();
-                }
-                else
-                {
-                    _logger.LogError(string.Format(_messages.Controller["ReturnedDetails"], _entity, id));
-                    return Ok(result);
-                }
+                var result = _repository.IdentityUsers.GetIdentityUsersAsync();
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -190,25 +117,22 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Update a UserProfile
+        /// Update a Identity
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     PUT /UserProfile
+        ///     PUT /Identity
         ///     {
+        ///         "name": "string",
+        ///         "description": "string",
         ///         "appUserId": 0,
-        ///         "location": "string",
-        ///         "locale": "string",
-        ///         "gender": "string",
-        ///         "facebookId": 0,
-        ///         "pictureUrl": "string",
         ///         "id": 0,
         ///     }
         /// 
         ///
         /// </remarks>
-        /// <param name="userProfile">UserProfile</param>
+        /// <param name="identity">Identity</param>
         /// <returns></returns>
         /// <response code="204">No content</response>
         /// <response code="400">Invalid Object</response>
@@ -219,11 +143,11 @@ namespace MTL.WebAPI.Controllers
         [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
         [ProducesResponseType(typeof(NotFoundResult), 404)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> UpdateUserProfile([FromBody]UserProfile userProfile)
+        public async Task<IActionResult> UpdateIdentity([FromBody]IdentityUser identity)
         {
             try
             {
-                if (userProfile.IsObjectNull())
+                if (identity == null)
                 {
                     _logger.LogError(string.Format(_messages.Controller["NullObject"], _entity));
                     return BadRequest(string.Format(_messages.Controller["NullObject"], _entity));
@@ -235,15 +159,15 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var dbUserProfile = await _repository.UserProfiles.GetUserProfileByIdAsync(userProfile.Id);
-                if (dbUserProfile.IsEmptyObject())
+                var dbIdentity = await _repository.IdentityUsers.FindByIdAsync(identity.Id);
+                if (dbIdentity == null)
                 {
-                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, userProfile.Id));
+                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, identity.Id));
                     return NotFound();
                 }
 
-                await _repository.UserProfiles.UpdateUserProfileAsync(userProfile.Id, userProfile);
-                _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, userProfile.Id));
+               // await _repository.IdentityUsers.(identity.Id, identity);
+                _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, identity.Id));
                 return NoContent();
             }
             catch (Exception ex)
@@ -254,36 +178,33 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Create a UserProfile
+        /// Create a Identity
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /UserProfile/1
+        ///     POST /Identity/1
         ///     {
+        ///         "name": "string",
+        ///         "description": "string",
         ///         "appUserId": 0,
-        ///         "location": "string",
-        ///         "locale": "string",
-        ///         "gender": "string",
-        ///         "facebookId": 0,
-        ///         "pictureUrl": "string",
         ///     }
         ///
         /// </remarks>
-        /// <param name="userProfile">UserProfile</param>
+        /// <param name="identity">Identity</param>
         /// <returns></returns>
         /// <response code="201">Object created at route</response>
         /// <response code="400">Object Null or Invalid</response>
         /// <response code="500">Internal server error</response> 
         [HttpPost]
-        [ProducesResponseType(typeof(UserProfile), 201)]
+        [ProducesResponseType(typeof(Identity), 201)]
         [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> Post([FromBody]UserProfile userProfile)
+        public async Task<IActionResult> Post([FromBody]Identity identity)
         {
             try
             {
-                if (userProfile.IsObjectNull())
+                if (identity.IsObjectNull())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NullObject"], _entity));
                     return BadRequest(string.Format(_messages.Controller["NullObject"], _entity));
@@ -295,9 +216,9 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var Id = await _repository.UserProfiles.CreateUserProfileAsync(userProfile);
+                var Id = await _repository.Identitys.CreateIdentityAsync(identity);
 
-                var ret = CreatedAtRoute("GetUserProfileById", new { id = Id }, userProfile);
+                var ret = CreatedAtRoute("GetIdentityById", new { id = Id }, identity);
                 _logger.LogError(string.Format(_messages.Controller["InvalidObject"], _entity));
                 return ret;
             }
@@ -309,19 +230,19 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Delete a UserProfile by Id
+        /// Delete a Identity by Id
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /UserProfile/1
+        ///     DELETE /Identity/1
         ///     {
         ///      
         ///     }
         ///
         /// </remarks>
-        /// <param name="id">UserProfile Id</param>
-        /// <returns>UserProfile Id</returns>
+        /// <param name="id">Identity Id</param>
+        /// <returns>Identity Id</returns>
         /// <response code="200">Object Result Id</response>
         /// <response code="404">Object with Id not found</response>
         /// <response code="500">Internal server error</response>     
@@ -333,14 +254,14 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var userProfile = await _repository.UserProfiles.GetUserProfileByIdAsync(id);
-                if (userProfile.IsEmptyObject())
+                var identity = await _repository.Identitys.GetIdentityByIdAsync(id);
+                if (identity.IsEmptyObject())
                 {
                     _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
                     return NotFound();
                 }
 
-                await _repository.UserProfiles.DeleteUserProfileAsync(id);
+                await _repository.Identitys.DeleteIdentityAsync(id);
                 _logger.LogError(string.Format(_messages.Controller["Deleted"], _entity, id));
                 return new ObjectResult(id);
             }

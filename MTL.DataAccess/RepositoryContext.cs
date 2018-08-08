@@ -7,7 +7,7 @@ using MTL.DataAccess.Entities;
 
 namespace MTL.DataAccess
 {
-    public class RepositoryContext : IdentityDbContext<AppUser>
+    public class RepositoryContext : IdentityDbContext
     {
         public RepositoryContext(DbContextOptions opts)
         : base(opts)
@@ -27,6 +27,8 @@ namespace MTL.DataAccess
         public DbSet<TimeLine> TimeLines { get; set; }
         public DbSet<Memory> Memories { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
+
 
     }
 }

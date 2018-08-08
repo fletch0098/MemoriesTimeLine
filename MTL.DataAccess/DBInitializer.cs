@@ -13,9 +13,9 @@ namespace MTL.DataAccess
     public class DbInitializer
     {
         private readonly ILogger<DbInitializer> _logger;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public DbInitializer(ILogger<DbInitializer> logger, UserManager<AppUser> userManager)
+        public DbInitializer(ILogger<DbInitializer> logger, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _userManager = userManager;
@@ -36,10 +36,18 @@ namespace MTL.DataAccess
 
             _logger.LogInformation(string.Format("{0} : Preparing to seed database", System.Reflection.MethodBase.GetCurrentMethod()));
 
+            //Identity Users
+            var IdentityUsers = new IdentityUser[]
+            {
+                new IdentityUser{UserName = "Admin@mtl.com", Email="Admin@mtl.com" },
+                new IdentityUser{UserName = "User@mtl.com", Email="User@mtl.com" }
+            };
+
+
             //User
             var AppUsers = new AppUser[]
             {
-            new AppUser{ UserName = "Admin@mtl.com", FirstName = "Admin", LastName= "Bob", Email="Admin@mtl.com" },
+            new AppUser{   },
             new AppUser{ UserName = "User@mtl.com", FirstName = "User", LastName= "Bob", Email="User@mtl.com" }
             };
 

@@ -1,69 +1,151 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using MTL.DataAccess.Contracts;
-using Microsoft.AspNetCore.Identity;
 using MTL.DataAccess.Entities;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using MTL.DataAccess.Entities.Extensions;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-
-// var localUser = await _userManager.FindByNameAsync(userInfo.Email);
+using Microsoft.AspNetCore.Identity;
 
 namespace MTL.DataAccess.Repository
 {
-    public class AppUserRepository : IAppUserRepository
+    public class AppUserRepository : RepositoryBase<AppUser>, IAppUserRepository
     {
-        protected RepositoryContext RepositoryContext { get; set; }
-        private readonly UserManager<AppUser> _userManager;
-        private readonly ILogger<RepositoryWrapper> _logger;
+        //private readonly ILogger<RepositoryWrapper> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public AppUserRepository(RepositoryContext repositoryContext, UserManager<AppUser> userManager, ILogger<RepositoryWrapper> logger)
+        public AppUserRepository(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger, UserManager<IdentityUser> userManager)
+        : base(repositoryContext, logger)
         {
-            this.RepositoryContext = repositoryContext;
             this._userManager = userManager;
-            this._logger = logger;
         }
 
-        #region ASYNC
-        public async Task<IdentityResult> CreateAppUserAsync(AppUser entity, string password)
+
+        #region SYNC
+        public IEnumerable<AppUser> GetAllAppUsers()
         {
-            var result = await _userManager.CreateAsync(entity, password);
-            return result;
+            return FindAll()
+                .OrderBy(tl => tl.LastName);
         }
 
-        public async Task<AppUser> FindByNameAsync(string userName)
+        public AppUser GetAppUserById(int id)
         {
-            var user = await _userManager.FindByNameAsync(userName);
-            return user;
+            return FindByCondition(tl => tl.Id.Equals(id))
+                .DefaultIfEmpty(new AppUser())
+                .FirstOrDefault();
         }
 
-        public async Task<AppUserExtended> FindExtendedByNameAsync(string userName)
+        public IEnumerable<AppUser> GetAppUsersByIdentityId(string identityId)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            return FindByCondition(tl => tl.IdentityId.Equals(identityId))
+                .OrderBy(x => x.LastModified);
+        }
 
-            return new AppUserExtended(user)
+        public AppUserExtended GetAppUserWithDetails(int id)
+        {
+            var appUser = GetAppUserById(id);
+
+            var identity = _userManager.FindByIdAsync(appUser.IdentityId);
+
+            return new AppUserExtended(appUser)
             {
-                UserProfile =  RepositoryContext.UserProfiles
-                    .Where(a => a.IdentityId == user.Id)
-                    .DefaultIfEmpty(new UserProfile())
-                    .FirstOrDefault()
+                IdentityUser = identity.Result,
+                UserProfile = RepositoryContext.UserProfiles
+                    .Where(a => a.AppUserId == id).FirstOrDefault(),
             };
         }
 
-        public async Task<AppUser> FindByEmailAsync(string email)
+        public int CreateAppUser(AppUser appUser)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            return user;
+            Create(appUser);
+            Save();
+            return appUser.Id;
         }
 
-        public async Task<bool> CheckPasswordAsync(AppUser userToVerify, string password)
+        public void UpdateAppUser(int id,AppUser appUser)
         {
-            var result = await _userManager.CheckPasswordAsync(userToVerify, password);
-            return result;
+            AppUser dbAppUser = GetAppUserById(id);
+            appUser.Modified();
+            dbAppUser.Map(appUser);
+            Update(dbAppUser);
+            Save();
+        }
+
+        public void DeleteAppUser(int id)
+        {
+            AppUser dbAppUser = GetAppUserById(id);
+            Delete(dbAppUser);
+            Save();
+        }
+
+        #endregion
+
+        #region ASYNC
+        public async Task<IEnumerable<AppUser>> GetAllAppUsersAsync()
+        {
+            var appUsers = await FindAllAsync();
+            return appUsers.OrderBy(x => x.LastModified);
+        }
+
+        public async Task<IEnumerable<AppUser>> GetAppUsersByIdentityIdAsync(string identityId)
+        {
+            var appUsers = await FindByConditionAync(o => o.IdentityId.Equals(identityId));
+            return appUsers.OrderBy(x => x.LastModified);
+        }
+
+        public async Task<AppUser> GetAppUserByIdAsync(int id)
+        {
+            var appUser = await FindByConditionAync(o => o.Id.Equals(id));
+            return appUser.DefaultIfEmpty(new AppUser())
+                    .FirstOrDefault();
+        }
+
+        public async Task<AppUserExtended> GetAppUserWithDetailsAsync(int id)
+        {
+            var appUser = await GetAppUserByIdAsync(id);
+            var IdentityUser = await _userManager.FindByIdAsync(appUser.IdentityId);
+            var UserProfile = await RepositoryContext.UserProfiles
+                    .Where(a => a.AppUserId == id).FirstOrDefaultAsync();
+
+            return new AppUserExtended(appUser)
+            {
+                 IdentityUser = IdentityUser,
+                UserProfile = UserProfile
+            };
+        }
+
+        //public async Task<AppUserExtended> GetAppUserWithOwnerAsync(int id)
+        //{
+        //    var appUser = await GetAppUserByIdAsync(id);
+
+        //    return new AppUserExtended(appUser)
+        //    {
+        //        Identity = await _userManager.FindByIdAsync(appUser.IdentityId)
+        //    };
+        //}
+
+        public async Task<int> CreateAppUserAsync(AppUser appUser)
+        {
+            Create(appUser);
+            await SaveAsync();
+            return appUser.Id;
+        }
+
+        public async Task UpdateAppUserAsync(int id, AppUser appUser)
+        {
+            AppUser dbAppUser = await GetAppUserByIdAsync(id);
+            dbAppUser.Modified();
+            dbAppUser.Map(appUser);
+            Update(dbAppUser);
+            await SaveAsync();
+        }
+
+        public async Task DeleteAppUserAsync(int id)
+        {
+            AppUser dbAppUser = await GetAppUserByIdAsync(id);
+            Delete(dbAppUser);
+            await SaveAsync();
         }
         #endregion
     }

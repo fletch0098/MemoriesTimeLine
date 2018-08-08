@@ -2,7 +2,7 @@
 
 namespace MTL.DataAccess.Entities
 {
-    public class AppUserExtended : IdentityUser
+    public class AppUserExtended : BaseEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -14,6 +14,8 @@ namespace MTL.DataAccess.Entities
         {
             this.FirstName = appUser.FirstName;
             this.LastName = appUser.LastName;
+            this.Id = appUser.Id;
+            this.LastModified = appUser.LastModified;
         }
     }
 }

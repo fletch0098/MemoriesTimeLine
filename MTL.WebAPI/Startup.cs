@@ -132,7 +132,7 @@ namespace MTL.WebAPI
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
             //add identity
-            var builder = services.AddIdentityCore<MTL.DataAccess.Entities.AppUser>(o =>
+            var builder = services.AddIdentityCore<IdentityUser>(o =>
             {
                 // configure identity options
                 o.Password.RequireDigit = false;

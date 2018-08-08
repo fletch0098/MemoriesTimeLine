@@ -13,9 +13,9 @@ namespace MTL.DataAccess
     public class RepositoryInitializer
     {
         private readonly ILogger<RepositoryInitializer> _logger;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public RepositoryInitializer(ILogger<RepositoryInitializer> logger, UserManager<AppUser> userManager)
+        public RepositoryInitializer(ILogger<RepositoryInitializer> logger, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _userManager = userManager;
@@ -34,27 +34,71 @@ namespace MTL.DataAccess
 
             _logger.LogInformation(string.Format("{0} : Preparing to seed database", System.Reflection.MethodBase.GetCurrentMethod()));
 
-            //User
-            var AppUsers = new AppUser[]
+            //IdentityUser
+            var identityUsers = new IdentityUser[]
             {
-            new AppUser{ UserName = "Admin@mtl.com", FirstName = "Admin", LastName= "Bob", Email="Admin@mtl.com" },
-            new AppUser{ UserName = "User@mtl.com", FirstName = "User", LastName= "Bob", Email="User@mtl.com" }
+            new IdentityUser{ UserName = "Admin@mtl.com", Email ="Admin@mtl.com" },
+            new IdentityUser{ UserName = "User@mtl.com", Email ="User@mtl.com" }
             };
 
-            foreach (AppUser seed in AppUsers)
+            var password = "mtlmtl";
+
+            foreach (IdentityUser seed in identityUsers)
             {
-                var result = await _userManager.CreateAsync(seed, "mtlmtl");
-                await context.UserProfiles.AddAsync(new UserProfile { IdentityId  = seed.Id, Location = "MTL", Gender= "Male", Locale="en-US", LastModified = DateTime.Now });
+                var result = await _userManager.CreateAsync(seed, password);
             }
-            ///User END
+            ///IdentityUser END
 
+            //AppUsers
+            var appUsers = new AppUser[]
+            {
+            new AppUser{ FirstName = "Brother", LastName = "Bob", IdentityId = identityUsers[0].Id },
+            new AppUser{ FirstName = "Admin", LastName = "Bob", IdentityId = identityUsers[1].Id }
+            };
 
+            foreach (AppUser seed in appUsers)
+            {
+                context.AppUsers.Add(seed);
+            }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(string.Format("{0} : AppUser seeding error", System.Reflection.MethodBase.GetCurrentMethod()), ex);
+            }
+
+            //UserProfiles
+            var userProfies = new UserProfile[]
+            {
+            new UserProfile{ AppUserId = appUsers[0].Id, Gender = "Male", Locale = "en-US", Location= "Hell", LastModified = DateTime.Now},
+            new UserProfile{ AppUserId = appUsers[1].Id, Gender = "Male", Locale = "en-US", Location= "Hell", LastModified = DateTime.Now}
+            };
+
+            foreach (UserProfile seed in userProfies)
+            {
+                context.UserProfiles.Add(seed);
+            }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(string.Format("{0} : UserProfile seeding error", System.Reflection.MethodBase.GetCurrentMethod()), ex);
+            }
+            //UserProfile End
+
+            //TimeLines
             var TimeLines = new TimeLine[]
             {
-            new TimeLine{  Name = "TimeLine1", Description = "A time line about ...", LastModified=DateTime.Now, IdentityId = AppUsers[1].Id},
-            new TimeLine{  Name = "TimeLine2", Description = "A time line about ...", LastModified=DateTime.Now, IdentityId = AppUsers[1].Id},
-            new TimeLine{  Name = "TimeLine3", Description = "A time line about ...", LastModified=DateTime.Now, IdentityId = AppUsers[1].Id},
-            new TimeLine{  Name = "TimeLine4", Description = "A time line about ...", LastModified=DateTime.Now, IdentityId = AppUsers[1].Id},
+            new TimeLine{  Name = "TimeLine1", Description = "A time line about ...", LastModified=DateTime.Now, AppUserId = appUsers[1].Id},
+            new TimeLine{  Name = "TimeLine2", Description = "A time line about ...", LastModified=DateTime.Now, AppUserId = appUsers[1].Id},
+            new TimeLine{  Name = "TimeLine3", Description = "A time line about ...", LastModified=DateTime.Now, AppUserId = appUsers[1].Id},
+            new TimeLine{  Name = "TimeLine4", Description = "A time line about ...", LastModified=DateTime.Now, AppUserId = appUsers[1].Id},
             };
 
             foreach (TimeLine seed in TimeLines)
@@ -70,6 +114,8 @@ namespace MTL.DataAccess
             {
                 _logger.LogError(string.Format("{0} : TimeLine seeding error", System.Reflection.MethodBase.GetCurrentMethod()), ex);
             }
+            //TimeLines End
+
 
             DateTime dateOne = new DateTime(2010, 4, 16);
             DateTime dateTwo = new DateTime(1984, 6, 7);
@@ -98,8 +144,9 @@ namespace MTL.DataAccess
                 _logger.LogError(string.Format("{0} : Memory seeding error", System.Reflection.MethodBase.GetCurrentMethod()),ex);
             }
 
-            _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), AppUsers.Count(), "AppUsers"));
-            _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), AppUsers.Count(), "UserProfiles"));
+            _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), identityUsers.Count(), "IdentityUsers"));
+            _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), appUsers.Count(), "AppUsers"));
+            _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), userProfies.Count(), "UserProfiles"));
             _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), Memories.Count(), "Memories"));
             _logger.LogInformation(string.Format("{0} : Seeded Database with {1} {2}", System.Reflection.MethodBase.GetCurrentMethod(), TimeLines.Count(), "TimeLines"));
             _logger.LogInformation(string.Format("{0} : DataBase Initializing Complete", System.Reflection.MethodBase.GetCurrentMethod()));
