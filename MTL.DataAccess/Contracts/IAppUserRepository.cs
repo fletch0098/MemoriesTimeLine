@@ -12,6 +12,7 @@ namespace MTL.DataAccess.Contracts
         #region ASYNC
         Task<IdentityResult> CreateAppUserAsync(AppUser entity, string password);
         Task<AppUser> FindByNameAsync(string userName);
+        Task<AppUserExtended> FindExtendedByNameAsync(string userName);
         Task<AppUser> FindByEmailAsync(string email);
         Task<bool> CheckPasswordAsync(AppUser userToVerify, string password);
         #endregion

@@ -80,5 +80,50 @@ namespace MTL.WebAPI.Controllers
 
             return new OkObjectResult("Account created");
         }
+
+        /// <summary>
+        /// Get an Identity by Id
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     Get /Identity/1
+        ///     {
+        ///       
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id">Identity Id</param>
+        /// <returns>A single Identity</returns>
+        /// <response code="200">AppUser</response>
+        /// <response code="404">Object with Id not found</response>
+        /// <response code="500">Internal server error</response>       
+        [HttpGet("{id}", Name = "GetAppUserById")]
+        [ProducesResponseType(typeof(AppUser), 200)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
+        [ProducesResponseType(typeof(StatusCodeResult), 500)]
+        public async Task<IActionResult> Get(string id)
+        {
+            try
+            {
+                var result = await _repository.AppUser.(id);
+
+                if (result.IsEmptyObject())
+                {
+                    _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
+                    return NotFound();
+                }
+                else
+                {
+                    _logger.LogError(string.Format(_messages.Controller["ReturnedId"], _entity, id));
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(string.Format(_messages.Controller["SomeError"], ex.Message));
+                return StatusCode(500, string.Format(_messages.Controller["Error500"]));
+            }
+        }
     }
 }

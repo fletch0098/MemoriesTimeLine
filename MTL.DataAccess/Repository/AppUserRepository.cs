@@ -41,6 +41,19 @@ namespace MTL.DataAccess.Repository
             return user;
         }
 
+        public async Task<AppUserExtended> FindExtendedByNameAsync(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+
+            return new AppUserExtended(user)
+            {
+                UserProfile =  RepositoryContext.UserProfiles
+                    .Where(a => a.IdentityId == user.Id)
+                    .DefaultIfEmpty(new UserProfile())
+                    .FirstOrDefault()
+            };
+        }
+
         public async Task<AppUser> FindByEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

@@ -38,7 +38,7 @@ namespace MTL.DataAccess.Repository
 
         public IEnumerable<TimeLine> GetTimeLinesByOwnerId(int ownerId)
         {
-            return FindByCondition(tl => tl.OwnerId.Equals(ownerId))
+            return FindByCondition(tl => tl.IdentityId.Equals(ownerId))
                 .OrderBy(x => x.LastModified);
         }
 
@@ -57,8 +57,8 @@ namespace MTL.DataAccess.Repository
 
             return new TimeLineExtended(timeLine)
             {
-                Owner = _userManager.Users
-                .Where(x => x.Id == timeLine.OwnerId)
+                Identity = _userManager.Users
+                .Where(x => x.Id == timeLine.IdentityId)
                 .FirstOrDefault()
             };
         }
@@ -97,7 +97,7 @@ namespace MTL.DataAccess.Repository
 
         public async Task<IEnumerable<TimeLine>> GetTimeLinesByOwnerIdAsync(string ownerId)
         {
-            var timeLines = await FindByConditionAync(o => o.OwnerId.Equals(ownerId));
+            var timeLines = await FindByConditionAync(o => o.IdentityId.Equals(ownerId));
             return timeLines.OrderBy(x => x.LastModified);
         }
 
@@ -125,7 +125,7 @@ namespace MTL.DataAccess.Repository
 
             return new TimeLineExtended(timeLine)
             {
-                Owner = await _userManager.FindByIdAsync(timeLine.OwnerId)
+                Identity = await _userManager.FindByIdAsync(timeLine.IdentityId)
             };
         }
 

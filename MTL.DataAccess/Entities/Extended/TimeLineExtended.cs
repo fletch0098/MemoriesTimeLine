@@ -9,9 +9,9 @@ namespace MTL.DataAccess.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public String OwnerId { get; set; }
+        public String IdentityId { get; set; }
 
-        public AppUser Owner {get;set;}
+        public AppUser Identity {get;set;}
         public IEnumerable<Memory> Memories { get; set; }
 
         public TimeLineExtended(TimeLine timeLine)
@@ -19,7 +19,7 @@ namespace MTL.DataAccess.Entities
             this.Id = timeLine.Id;
             this.Name = timeLine.Name;
             this.Description = timeLine.Description;
-            this.OwnerId = timeLine.OwnerId;
+            this.IdentityId = timeLine.IdentityId;
             this.LastModified = timeLine.LastModified;
         }
     }

@@ -51,10 +51,10 @@ namespace MTL.DataAccess
 
             var TimeLines = new TimeLine[]
             {
-            new TimeLine{  Name = "TimeLine1", Description = "A time line about ...", LastModified=DateTime.Now, OwnerId = AppUsers[1].Id},
-            new TimeLine{  Name = "TimeLine2", Description = "A time line about ...", LastModified=DateTime.Now, OwnerId = AppUsers[1].Id},
-            new TimeLine{  Name = "TimeLine3", Description = "A time line about ...", LastModified=DateTime.Now, OwnerId = AppUsers[1].Id},
-            new TimeLine{  Name = "TimeLine4", Description = "A time line about ...", LastModified=DateTime.Now, OwnerId = AppUsers[1].Id},
+            new TimeLine{  Name = "TimeLine1", Description = "A time line about ...", LastModified=DateTime.Now, IdentityId = AppUsers[1].Id},
+            new TimeLine{  Name = "TimeLine2", Description = "A time line about ...", LastModified=DateTime.Now, IdentityId = AppUsers[1].Id},
+            new TimeLine{  Name = "TimeLine3", Description = "A time line about ...", LastModified=DateTime.Now, IdentityId = AppUsers[1].Id},
+            new TimeLine{  Name = "TimeLine4", Description = "A time line about ...", LastModified=DateTime.Now, IdentityId = AppUsers[1].Id},
             };
 
             foreach (TimeLine seed in TimeLines)

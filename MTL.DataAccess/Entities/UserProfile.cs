@@ -12,5 +12,7 @@ namespace MTL.DataAccess.Entities
         public string Location { get; set; }
         public string Locale { get; set; }
         public string Gender { get; set; }
+        public long? FacebookId { get; set; }
+        public string PictureUrl { get; set; }
     }
 }

@@ -14,6 +14,8 @@ namespace MTL.DataAccess.Entities.Extensions
             dbUserProfile.LastModified = userProfile.LastModified;
             dbUserProfile.Locale = userProfile.Locale;
             dbUserProfile.Location = userProfile.Location;
+            dbUserProfile.FacebookId = userProfile.FacebookId;
+            dbUserProfile.PictureUrl = userProfile.PictureUrl;
         }
     }
 }

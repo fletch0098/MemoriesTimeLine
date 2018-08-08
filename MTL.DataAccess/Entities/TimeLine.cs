@@ -27,28 +27,28 @@ namespace MTL.DataAccess.Entities
         [StringLength(60, ErrorMessage = "Name can't be longer than 60 characters")]
         public string Description { get; set; }
 
-        public String OwnerId { get; set; }
+        public String IdentityId { get; set; }
 
         public TimeLine()
         {
-
+            this.LastModified = DateTime.Now;
         }
 
         //Detailed
-        public TimeLine(string name, string description, string ownerId)
+        public TimeLine(string name, string description, string identityId)
         {
             this.Name = name;
             this.Description = description;
-            this.OwnerId = ownerId;
+            this.IdentityId = identityId;
             this.LastModified = DateTime.Now;
         }
 
         //With Owner
-        public TimeLine(string name, string description, AppUser owner)
+        public TimeLine(string name, string description, AppUser identity)
         {
             this.Name = name;
             this.Description = description;
-            this.OwnerId = owner.Id;
+            this.IdentityId = identity.Id;
             this.LastModified = DateTime.Now;
         }
 

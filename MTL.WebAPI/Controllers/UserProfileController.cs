@@ -66,29 +66,29 @@ namespace MTL.WebAPI.Controllers
         }
 
         ///// <summary>
-        ///// Get UserProfile by OwnerId
+        ///// Get UserProfile by IdentityId
         ///// </summary>
         ///// <remarks>
         ///// Sample request:
         /////
-        /////     GET /UserProfile/owner/1
+        /////     GET /UserProfile/identity/1
         /////     {
         /////        
         /////     }
         /////
         ///// </remarks>
-        ///// <param name = "ownerId" > Owner Id</param>
-        ///// <returns>A list of UserProfiles for the owner</returns>
+        ///// <param name = "identityId" > Identity Id</param>
+        ///// <returns>A list of UserProfiles for the identity</returns>
         ///// <response code = "200" > UserProfiles[] </ response >
         ///// < response code= "500" > Internal server error</response>            
-        ////[HttpGet("owner/{ownerId}")]
+        ////[HttpGet("identity/{identityId}")]
         ////[ProducesResponseType(typeof(UserProfile[]), 200)]
         ////[ProducesResponseType(typeof(StatusCodeResult), 500)]
-        ////public async Task<IActionResult> GetAllByOwnerId(string ownerId)
+        ////public async Task<IActionResult> GetAllByIdentityId(string identityId)
         ////{
         ////    try
         ////    {
-        ////        var result = await _repository.UserProfile.GetUserProfileByIdentityId(ownerId);
+        ////        var result = await _repository.UserProfile.GetUserProfileByIdentityId(identityId);
         ////        return Ok(result);
         ////    }
         ////    catch (Exception ex)
@@ -190,12 +190,12 @@ namespace MTL.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Get a UserProfile with its Owner
+        /// Get a UserProfile with its Identity
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /UserProfile/1/Owner
+        ///     Get /UserProfile/1/Identity
         ///     {
         ///       
         ///     }
@@ -206,11 +206,11 @@ namespace MTL.WebAPI.Controllers
         /// <response code="200">ExtendedUserProfile</response>
         /// <response code="404">Object with Id not found</response>
         /// <response code="500">Internal server error</response>  
-        [HttpGet("{id}/owner")]
+        [HttpGet("{id}/identity")]
         [ProducesResponseType(typeof(UserProfileExtended), 204)]
         [ProducesResponseType(typeof(NotFoundResult), 404)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> GetWithOwner(int id)
+        public async Task<IActionResult> GetWithIdentity(int id)
         {
             try
             {
@@ -244,7 +244,7 @@ namespace MTL.WebAPI.Controllers
         ///     {
         ///         "name": "string",
         ///         "description": "string",
-        ///         "ownerId": "string",
+        ///         "identityId": "string",
         ///         "id": 0,
         ///         "lastModified": "2018-08-07T01:39:19.706Z"
         ///     }
@@ -306,7 +306,7 @@ namespace MTL.WebAPI.Controllers
         ///     {
         ///         "name": "string",
         ///         "description": "string",
-        ///         "ownerId": "string",
+        ///         "identityId": "string",
         ///         "id": 0,
         ///         "lastModified": "2018-08-07T01:39:19.706Z"
         ///     }
