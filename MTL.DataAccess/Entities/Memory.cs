@@ -20,13 +20,14 @@ namespace MTL.DataAccess.Entities
         [Required(ErrorMessage = "Date is required")]
         public DateTime Date { get; set; }
 
+        [Required(ErrorMessage = "TimeLine is required")]
         public int TimeLineId { get; set; }
 
         //Constructors
         //Basic
         public Memory()
         {
-
+            this.Modified();
         }
 
         //Detailed
@@ -36,17 +37,17 @@ namespace MTL.DataAccess.Entities
             this.Description = description;
             this.Date = date;
             this.TimeLineId = timeLineId;
-            this.LastModified = DateTime.Now;
+            this.Modified();
         }
 
-        //TimeLine
+        //Detailed with TimeLine
         public Memory(string name, string description, DateTime date, TimeLine timeLine)
         {
             this.Name = name;
             this.Description = description;
             this.Date = date;
             this.TimeLineId = timeLine.Id;
-            this.LastModified = DateTime.Now;
+            this.Modified();
         }
     }
 }
