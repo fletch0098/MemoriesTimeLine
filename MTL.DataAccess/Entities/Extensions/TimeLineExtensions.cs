@@ -11,7 +11,8 @@ namespace MTL.DataAccess.Entities.Extensions
             dbTimeLine.Name = timeLine.Name;
             dbTimeLine.Description = timeLine.Description;
             dbTimeLine.LastModified = timeLine.LastModified;
-            dbTimeLine.IdentityId = timeLine.IdentityId;
+            dbTimeLine.AppUserId = timeLine.AppUserId;
+            dbTimeLine.Id = timeLine.Id;
         }
     }
 }

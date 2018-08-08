@@ -13,8 +13,6 @@ namespace MTL.DataAccess.Entities
         public string Description { get; set; }
         public DateTime Date { get; set; }
 
-        public int TimeLineId { get; set; }
-
         public TimeLine TimeLine { get; set; }
 
         public MemoryExtended(Memory memory)

@@ -13,6 +13,7 @@ namespace MTL.DataAccess.Entities.Extensions
             dbMemory.LastModified = memory.LastModified;
             dbMemory.Date = memory.Date;
             dbMemory.TimeLineId = memory.TimeLineId;
+            dbMemory.Id = memory.Id;
         }
     }
 }

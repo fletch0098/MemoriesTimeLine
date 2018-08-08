@@ -23,8 +23,6 @@ namespace MTL.DataAccess.Entities
         public long? FacebookId { get; set; }
         public string PictureUrl { get; set; }
 
-        //Constructors
-        //Basic
         public UserProfile()
         {
             this.Modified();

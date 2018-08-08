@@ -10,7 +10,7 @@ namespace MTL.DataAccess.Entities.Extensions
         {
             dbUserProfile.Gender = userProfile.Gender;
             dbUserProfile.Id = userProfile.Id;
-            dbUserProfile.IdentityId = userProfile.IdentityId;
+            dbUserProfile.AppUserId = userProfile.AppUserId;
             dbUserProfile.LastModified = userProfile.LastModified;
             dbUserProfile.Locale = userProfile.Locale;
             dbUserProfile.Location = userProfile.Location;

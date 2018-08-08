@@ -8,7 +8,6 @@ namespace MTL.DataAccess.Entities
     [Table("Memories")]
     public class Memory : BaseEntity
     {
-        //Properties
         [Required(ErrorMessage = "Name is required")]
         [StringLength(60, ErrorMessage = "Name can't be longer than 60 characters")]
         public string Name { get; set; }
@@ -23,30 +22,8 @@ namespace MTL.DataAccess.Entities
         [Required(ErrorMessage = "TimeLine is required")]
         public int TimeLineId { get; set; }
 
-        //Constructors
-        //Basic
         public Memory()
         {
-            this.Modified();
-        }
-
-        //Detailed
-        public Memory(string name, string description, DateTime date, int timeLineId)
-        {
-            this.Name = name;
-            this.Description = description;
-            this.Date = date;
-            this.TimeLineId = timeLineId;
-            this.Modified();
-        }
-
-        //Detailed with TimeLine
-        public Memory(string name, string description, DateTime date, TimeLine timeLine)
-        {
-            this.Name = name;
-            this.Description = description;
-            this.Date = date;
-            this.TimeLineId = timeLine.Id;
             this.Modified();
         }
     }

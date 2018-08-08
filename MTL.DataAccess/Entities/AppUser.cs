@@ -19,8 +19,6 @@ namespace MTL.DataAccess.Entities
         [Required(ErrorMessage = "Identity is required")]
         public string IdentityId { get; set; }
 
-        //Constructors
-        //Basic
         public AppUser()
         {
             this.Modified();

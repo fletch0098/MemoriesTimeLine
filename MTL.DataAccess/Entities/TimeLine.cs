@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
 
 namespace MTL.DataAccess.Entities
 {
@@ -21,26 +18,7 @@ namespace MTL.DataAccess.Entities
 
         public TimeLine()
         {
-            this.LastModified = DateTime.Now;
+            this.Modified();
         }
-
-        //Detailed
-        public TimeLine(string name, string description, int appUserId)
-        {
-            this.Name = name;
-            this.Description = description;
-            this.AppUserId = appUserId;
-            this.LastModified = DateTime.Now;
-        }
-
-        //Detailed with AppUser
-        public TimeLine(string name, string description, AppUser appUser)
-        {
-            this.Name = name;
-            this.Description = description;
-            this.AppUserId = appUser.Id;
-            this.LastModified = DateTime.Now;
-        }
-
     }
 }
