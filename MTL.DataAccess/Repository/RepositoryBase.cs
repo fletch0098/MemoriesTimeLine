@@ -17,7 +17,7 @@ namespace MTL.DataAccess.Repository
         private readonly ILogger<RepositoryWrapper> _logger;
 
         #region SYNC
-        public RepositoryBase(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger)
+        protected RepositoryBase(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger)
         {
             this.RepositoryContext = repositoryContext;
             this._logger = logger;

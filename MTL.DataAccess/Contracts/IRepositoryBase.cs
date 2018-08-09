@@ -5,6 +5,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+
+using MTL.DataAccess.Contracts;
+using MTL.DataAccess.Entities;
+using MTL.DataAccess.Entities.Extensions;
+
+using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+
+
 namespace MTL.DataAccess.Contracts
 {
 

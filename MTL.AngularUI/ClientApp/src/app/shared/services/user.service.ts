@@ -97,6 +97,8 @@ export class UserService extends BaseService {
     let authToken = localStorage.getItem('auth_token');
     headers.append('Authorization', `Bearer ${authToken}`);
 
+    console.log(headers.toJSON());
+
     return this.http.get(this.baseUrl + "api/dashboard/userdetails", { headers })
       .map(response => response.json())
       .catch(this.handleError);

@@ -1,5 +1,6 @@
 ﻿using MTL.DataAccess.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace MTL.WebAPI.ViewModels.Mappings
@@ -8,7 +9,7 @@ namespace MTL.WebAPI.ViewModels.Mappings
     {
         public ViewModelToEntityMappingProfile()
         {
-            //CreateMap<RegistrationViewModel, AppUser>().ForMember(au => au., map => map.MapFrom(vm => vm.Email));
+            CreateMap<RegistrationViewModel, IdentityUser>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
         }
     }
 }
