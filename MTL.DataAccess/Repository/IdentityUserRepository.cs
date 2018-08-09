@@ -28,42 +28,50 @@ namespace MTL.DataAccess.Repository
             this._logger = logger;
         }
 
+        public IEnumerable<IdentityUser> GetAllIdentityUsers()
+        {
+            var result = _userManager.Users;
+            return result;
+        }
+
         #region ASYNC
+
+        public async Task<IdentityUser> GetIdentityUserByIdAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            return user;
+        }
+
+        public async Task<IdentityUser> GetIdentityUserByUserNameAsync(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            return user;
+        }
+
+        public async Task<IdentityUser> GetIdentityUserByEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return user;
+        }
+
         public async Task<IdentityResult> CreateIdentityUserAsync(IdentityUser entity, string password)
         {
             var result = await _userManager.CreateAsync(entity, password);
             return result;
         }
 
-        public async Task<IdentityUser> FindByNameAsync(string userName)
+        public async Task UpdateIdentityUserAsync(string id, IdentityUser entity)
         {
-            var user = await _userManager.FindByNameAsync(userName);
-            return user;
+            var result = await _userManager.UpdateAsync(entity);
         }
 
-        public async Task<IdentityUser> FindByIdAsync(string id)
+        public async Task DeleteIdentityUserAsync(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            return user;
+            var identityUser = await this.GetIdentityUserByIdAsync(id);
+
+            var result = await _userManager.DeleteAsync(identityUser);
         }
 
-        public async Task<IdentityUser> FindByEmailAsync(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            return user;
-        }
-
-        public async Task<bool> CheckPasswordAsync(IdentityUser userToVerify, string password)
-        {
-            var result = await _userManager.CheckPasswordAsync(userToVerify, password);
-            return result;
-        }
         #endregion
-
-        public IEnumerable<IdentityUser> GetIdentityUsersAsync()
-        {
-            var result = _userManager.Users;
-            return result;
-        }
     }
 }

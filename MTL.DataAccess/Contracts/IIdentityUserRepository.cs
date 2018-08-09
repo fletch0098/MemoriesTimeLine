@@ -10,14 +10,14 @@ namespace MTL.DataAccess.Contracts
     public interface IIdentityUserRepository
     {
         #region ASYNC
-        Task<IdentityResult> CreateIdentityUserAsync(IdentityUser entity, string password);
-        Task<IdentityUser> FindByNameAsync(string userName);
-        Task<IdentityUser> FindByIdAsync(string id);
-        //Task<IdentityUserExtended> FindExtendedByNameAsync(string userName);
-        Task<IdentityUser> FindByEmailAsync(string email);
-        Task<bool> CheckPasswordAsync(IdentityUser userToVerify, string password);
+        Task<IdentityUser> GetIdentityUserByIdAsync(string id);
+        Task<IdentityUser> GetIdentityUserByUserNameAsync(string userName);
+        Task<IdentityUser> GetIdentityUserByEmailAsync(string email);
+        Task<IdentityResult> CreateIdentityUserAsync(IdentityUser identityUser, string password);
+        Task UpdateIdentityUserAsync(string id, IdentityUser identityUser);
+        Task DeleteIdentityUserAsync(string id);
         #endregion
 
-        IEnumerable<IdentityUser> GetIdentityUsersAsync();
+        IEnumerable<IdentityUser> GetAllIdentityUsers();
     }
 }

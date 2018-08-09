@@ -64,7 +64,7 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var result = await _repository.IdentityUsers.FindByIdAsync(id);
+                var result = await _repository.IdentityUsers.GetIdentityUserByIdAsync(id);
 
                 if (result == null)
                 {
@@ -106,7 +106,7 @@ namespace MTL.WebAPI.Controllers
         {
             try
             {
-                var result = _repository.IdentityUsers.GetIdentityUsersAsync();
+                var result = _repository.IdentityUsers.GetAllIdentityUsers();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -159,14 +159,14 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var dbIdentity = await _repository.IdentityUsers.FindByIdAsync(identity.Id);
+                var dbIdentity = await _repository.IdentityUsers.GetIdentityUserByIdAsync(identity.Id);
                 if (dbIdentity == null)
                 {
                     _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, identity.Id));
                     return NotFound();
                 }
 
-               // await _repository.IdentityUsers.(identity.Id, identity);
+                await _repository.IdentityUsers.UpdateIdentityUserAsync(identity.Id, identity);
                 _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, identity.Id));
                 return NoContent();
             }
@@ -197,14 +197,16 @@ namespace MTL.WebAPI.Controllers
         /// <response code="400">Object Null or Invalid</response>
         /// <response code="500">Internal server error</response> 
         [HttpPost]
-        [ProducesResponseType(typeof(Identity), 201)]
+        [ProducesResponseType(typeof(IdentityUser), 201)]
         [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> Post([FromBody]Identity identity)
+        public async Task<IActionResult> Post([FromBody]IdentityUser identity)
         {
             try
             {
-                if (identity.IsObjectNull())
+                string password = "mtlmtl";
+
+                if (identity == null)
                 {
                     _logger.LogError(string.Format(_messages.Controller["NullObject"], _entity));
                     return BadRequest(string.Format(_messages.Controller["NullObject"], _entity));
@@ -216,7 +218,7 @@ namespace MTL.WebAPI.Controllers
                     return BadRequest(string.Format(_messages.Controller["InvalidObject"], _entity));
                 }
 
-                var Id = await _repository.Identitys.CreateIdentityAsync(identity);
+                var Id = await _repository.IdentityUsers.CreateIdentityUserAsync(identity, password);
 
                 var ret = CreatedAtRoute("GetIdentityById", new { id = Id }, identity);
                 _logger.LogError(string.Format(_messages.Controller["InvalidObject"], _entity));
@@ -250,18 +252,18 @@ namespace MTL.WebAPI.Controllers
         [ProducesResponseType(typeof(ObjectResult), 200)]
         [ProducesResponseType(typeof(NotFoundResult), 404)]
         [ProducesResponseType(typeof(StatusCodeResult), 500)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
-                var identity = await _repository.Identitys.GetIdentityByIdAsync(id);
-                if (identity.IsEmptyObject())
+                var identity = await _repository.IdentityUsers.GetIdentityUserByIdAsync(id);
+                if (identity == null)
                 {
                     _logger.LogError(string.Format(_messages.Controller["NotFound"], _entity, id));
                     return NotFound();
                 }
 
-                await _repository.Identitys.DeleteIdentityAsync(id);
+                await _repository.IdentityUsers.DeleteIdentityUserAsync(id);
                 _logger.LogError(string.Format(_messages.Controller["Deleted"], _entity, id));
                 return new ObjectResult(id);
             }

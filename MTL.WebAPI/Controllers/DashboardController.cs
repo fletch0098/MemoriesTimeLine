@@ -19,9 +19,9 @@ namespace MTL.WebAPI.Controllers
     public class DashboardController : Controller
     {
         private readonly ClaimsPrincipal _caller;
-        private readonly MyAppContext _appDbContext;
+        private readonly RepositoryContext _appDbContext;
 
-        public DashboardController(UserManager<AppUser> userManager, MyAppContext appDbContext, IHttpContextAccessor httpContextAccessor)
+        public DashboardController(UserManager<IdentityUser> userManager, RepositoryContext appDbContext, IHttpContextAccessor httpContextAccessor)
         {
             _caller = httpContextAccessor.HttpContext.User;
             _appDbContext = appDbContext;
@@ -29,43 +29,36 @@ namespace MTL.WebAPI.Controllers
 
         // GET api/dashboard/home
         [HttpGet]
-        public async Task<IActionResult> Home()
+        public IActionResult Get()
         {
             // retrieve the user info
             var userId = _caller.Claims.Single(c => c.Type == "id");
-            UserProfile person = await _appDbContext.UserProfile.Include(c => c.identity).SingleAsync(c => c.identity.Id == userId.Value);
+            //UserProfile person = await _appDbContext.UserProfile.Include(c => c.identity).SingleAsync(c => c.identity.Id == userId.Value);
 
             return new OkObjectResult(new
             {
-                Message = "This is secure API and user data!",
-                person.identity.FirstName,
-                person.identity.LastName,
-                person.identity.PictureUrl,
-                person.identity.FacebookId,
-                person.location,
-                person.locale,
-                person.gender
+                Message = "This is secure API and user data for ID: " + userId
             });
         }
 
-        // GET api/dashboard/getuserdetails
-        [HttpGet]
-        public async Task<IActionResult> UserDetails()
-        {
-            // retrieve the user info
-            var userId = _caller.Claims.Single(c => c.Type == "id");
-            UserProfile person = await _appDbContext.UserProfile.Include(c => c.identity).SingleAsync(c => c.identity.Id == userId.Value);
+        //// GET api/dashboard/getuserdetails
+        //[HttpGet]
+        //public async Task<IActionResult> UserDetails()
+        //{
+        //    // retrieve the user info
+        //    var userId = _caller.Claims.Single(c => c.Type == "id");
+        //    UserProfile person = await _appDbContext.UserProfile.Include(c => c.identity).SingleAsync(c => c.identity.Id == userId.Value);
 
-            return new OkObjectResult(new
-            {
-                person.identity.FirstName,
-                person.identity.LastName,
-                person.identity.PictureUrl,
-                person.identity.FacebookId,
-                person.location,
-                person.locale,
-                person.gender
-            });
-        }
+        //    return new OkObjectResult(new
+        //    {
+        //        person.identity.FirstName,
+        //        person.identity.LastName,
+        //        person.identity.PictureUrl,
+        //        person.identity.FacebookId,
+        //        person.location,
+        //        person.locale,
+        //        person.gender
+        //    });
+        //}
     }
 }
