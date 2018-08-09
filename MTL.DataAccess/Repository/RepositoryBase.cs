@@ -87,16 +87,8 @@ namespace MTL.DataAccess.Repository
             {
                 var x = this.RepositoryContext.Set<T>().Add(entity);
 
-                //if (x. > 0)
-                //{
-                //    ret = Memory.id;
+                _logger.LogInformation(string.Format("{0} : Added {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
 
-                    _logger.LogInformation(string.Format("{0} : Added {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
-                //}
-                //else
-                //{
-                    //_logger.LogWarning(string.Format("{0} : No Memories were added", System.Reflection.MethodBase.GetCurrentMethod()));
-                //}
             }
             catch (Exception ex)
             {
@@ -107,34 +99,131 @@ namespace MTL.DataAccess.Repository
 
         public void Update(T entity)
         {
-            this.RepositoryContext.Set<T>().Update(entity);
+            Type typeParameterType = typeof(T);
+
+            try
+            {
+                var ret = this.RepositoryContext.Set<T>().Update(entity);
+
+                _logger.LogInformation(string.Format("{0} : Updated {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, string.Format("{0} : An error occured while updating to {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+            }
+            
         }
 
         public void Delete(T entity)
         {
-            this.RepositoryContext.Set<T>().Remove(entity);
+            Type typeParameterType = typeof(T);
+
+            try
+            {
+                var ret = this.RepositoryContext.Set<T>().Remove(entity);
+
+                _logger.LogInformation(string.Format("{0} : Deleted {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, string.Format("{0} : An error occured while deleting to {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+            }            
         }
 
         public void Save()
         {
-            this.RepositoryContext.SaveChanges();
+            Type typeParameterType = typeof(T);
+
+            try
+            {
+                var ret = this.RepositoryContext.SaveChanges();
+
+                _logger.LogInformation(string.Format("{0} : Saved {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, string.Format("{0} : An error occured while saving to {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+            }
+            
         }
         #endregion
 
         #region ASYNC
         public async Task<IEnumerable<T>> FindAllAsync()
         {
-            return await this.RepositoryContext.Set<T>().ToListAsync();
+            IEnumerable<T> ret = null;
+
+            Type typeParameterType = typeof(T);
+
+            try
+            {
+                var query = await this.RepositoryContext.Set<T>().ToListAsync();
+
+                if (query != null)
+                {
+                    ret = query.ToList();
+                    _logger.LogInformation(string.Format("{0} : {1} {2} found", System.Reflection.MethodBase.GetCurrentMethod(), ret.Count(), typeParameterType.Name));
+                }
+                else
+                {
+                    _logger.LogWarning(string.Format("{0} : No {1} were found", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, string.Format("{0} : An error occured while looking for {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+            }
+
+            return ret;
         }
 
         public async Task<IEnumerable<T>> FindByConditionAync(Expression<Func<T, bool>> expression)
         {
-            return await this.RepositoryContext.Set<T>().Where(expression).ToListAsync();
+            IEnumerable<T> ret = null;
+
+            Type typeParameterType = typeof(T);
+
+            try
+            {
+                var query = await this.RepositoryContext.Set<T>().Where(expression).ToListAsync();
+
+                if (query != null)
+                {
+                    ret = query.ToList();
+                    _logger.LogInformation(string.Format("{0} : {1} {2} found", System.Reflection.MethodBase.GetCurrentMethod(), ret.Count(), typeParameterType.Name));
+                }
+                else
+                {
+                    _logger.LogWarning(string.Format("{0} : No {1} were found", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, string.Format("{0} : An error occured while looking for {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+            }
+
+            return ret;
         }
 
         public async Task SaveAsync()
         {
-            await this.RepositoryContext.SaveChangesAsync();
+            Type typeParameterType = typeof(T);
+
+            try
+            {
+                var ret = await this.RepositoryContext.SaveChangesAsync();
+
+                _logger.LogInformation(string.Format("{0} : Saved {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, string.Format("{0} : An error occured while saving to {1}", System.Reflection.MethodBase.GetCurrentMethod(), typeParameterType.Name));
+            }
+            
         }
         #endregion
     }

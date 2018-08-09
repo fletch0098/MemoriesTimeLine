@@ -15,7 +15,7 @@ namespace MTL.DataAccess.Repository
     /// </summary>
     public class TimeLineRepository : RepositoryBase<TimeLine>, ITimeLineRepository
     {
-        //private readonly ILogger<RepositoryWrapper> _logger;
+        private readonly ILogger<RepositoryWrapper> _logger;
         private readonly UserManager<IdentityUser> _userManager;
 
         public TimeLineRepository(RepositoryContext repositoryContext, ILogger<RepositoryWrapper> logger, UserManager<IdentityUser> userManager)
